@@ -37,7 +37,7 @@
     .filter-btn.active{background:var(--primary);color:#fff;border-color:transparent}
     .search{flex:1;min-width:220px}
     .search input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(11,99,183,0.18)}
-    .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px} /* 3 par ligne */
+    .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
     .project{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(12,40,80,0.04);display:flex;gap:12px;align-items:flex-start}
     .proj-thumb{width:110px;height:80px;border-radius:8px;background:linear-gradient(135deg, rgba(11,99,183,0.08), rgba(11,99,183,0.02));flex:0 0 110px;display:flex;align-items:center;justify-content:center;color:var(--primary);font-weight:700;overflow:hidden}
     .proj-thumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -59,11 +59,10 @@
     .modal-card{
       width:min(780px,96%);
       background:white;padding:20px;border-radius:12px;
-      /* >>> MODIF : scroll vertical dans la fenêtre de détails */
-      max-height:90vh;               /* limite à la hauteur d’écran */
-      overflow:auto;                 /* active la barre de défilement */
-      -webkit-overflow-scrolling:touch; /* scroll fluide iOS */
-      overscroll-behavior:contain;   /* évite le scroll de la page derrière */
+      max-height:90vh;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior:contain;
     }
     .modal-close{float:right;background:transparent;border:none;font-size:18px}
 
@@ -86,7 +85,6 @@
         <div class="role">Titulaire d’un Master MBFA, spécialité Risque, Assurance, Décision et Mathématique</div>
         <div class="role">Data Analyst (stage de fin d'étude @ Generali France)</div>
         <div class="cta">
-          <!-- Uniquement ces 3 boutons -->
           <a class="btn primary" href="#projects">Projets</a>
           <a class="btn" href="#certifications">Certifications</a>
           <a class="btn" id="contactBtn" href="#contact">Me contacter</a>
@@ -154,11 +152,11 @@
       {
         title: "Reporting IMPULSO - Power BI",
         summary: "Automatisation d'un reporting stratégique avec suivi des KPIs IARD et VIE (couverture, multi-équipement, leads, durabilité).",
-        tags: ["Power Query","DAX","SharePoint","Snowflake"],
-        stack: ["Power BI","Excel"],
+        tags: ["DAX","SharePoint","Snowflake","Excel"],
+        stack: ["Power BI","Power Query"],
         github: null,
         demo: null,
-        pdf: "reporting-impulso.pdf",   // <= place le fichier ici (à la racine du dépôt)
+        pdf: "reporting-impulso.pdf",
         img: null,
         images: [],
         company: "Generali France",
@@ -168,9 +166,9 @@
       {
         title: "Optimisation de portefeuille — VaR & CVaR sur le CaC40",
         summary: "Calcul des rendements/risques, optimisation (scipy), visualisations (matplotlib/seaborn).",
-        tags: null,
+        tags: ["Finance"],
         stack: ["Python","Gestion des risques"],
-        github: null,  
+        github: null,
         pdf: "https://nbviewer.org/github/axeloukou/axel-portfolio.github.io/blob/main/CVaR_optimisation.ipynb",
         demo: null,
         img: null,
@@ -185,13 +183,81 @@
         stack: null,
         github: null,
         demo: null,
-        // IMPORTANT : lien vers la page HTML rendue (ou lien RPubs si tu publies là-bas)
-        pdf: "document.pdf",
+        pdf: "s_survival.pdf",
         img: null,
         images: [],
         company: "Projet universitaire — Master 2",
-        impact: "Pipeline reproductible d’analyse de survie avec visualisations et diagnostics ; interprétation lisible des HR et de la médiane de survie.",
+        impact: "Mise en place d’un processus complet et reproductible d’analyse de survie avec visualisations et vérification des modèles de Cox.",
         highlights: ["Recodage des censures","Kaplan–Meier + p-value log-rank","Cox + diagnostics (cox.zph)","Forest plot"]
+      },
+      {
+        title: "Modélisation Solvabilité II — Best Estimate, SCR et VaR",
+        summary: "Construction d’un modèle Excel complet conforme à la directive Solvabilité II : calcul du Best Estimate, du SCR et de la Value at Risk (VaR). Étude de la diversification des risques et de la sensibilité au taux d’actualisation.",
+        tags: ["Solvabilité II","Actuariat"],
+        stack: ["Excel"],
+        github: null,
+        demo: null,
+        pdf: null,
+        img: null,
+        images: ["image3.png","image4.png","image5.png","image6.png"],
+        company: "Projet universitaire — Master 2 (Actuariat)",
+        impact: "Compréhension approfondie de la directive Solvabilité II et modélisation des indicateurs clés de solvabilité (BE, SCR, VaR) dans un outil automatisé et paramétrable.",
+        highlights: ["Best Estimate ajusté","SCR par module de risque","Simulation de la VaR 99,5 %","Matrice de corrélation","Duration du portefeuille"]
+      },
+      {
+        title: "Modélisation d’options — Arbres binomiaux, trinominaux et convergence vers Black–Scholes",
+        summary: "Implémentation sous Excel/VBA des arbres binomiaux et trinominaux pour la valorisation d’options. Étude de la convergence vers le modèle de Black–Scholes.",
+        tags: ["Finance"],
+        stack: ["Excel","VBA"],
+        github: null,
+        demo: null,
+        pdf: null,
+        img: null,
+        images: ["image1.png","image2.png"],
+        company: "Projet universitaire — Master 1",
+        impact: "Vérification numérique de la convergence des modèles binomiaux et trinominaux vers Black–Scholes ; compréhension approfondie des modèles d’options discrètes et des mathématiques financières.",
+        highlights: ["Arbres binomiaux et trinominaux","Comparaison avec Black–Scholes","Visualisation de la convergence","Automatisation via VBA"]
+      },
+      {
+        title: "Scoring de crédit — Régression logistique (R)",
+        summary: "Préparation des données et transformation des variables, mise en place d’un modèle de régression logistique pour le scoring de crédit, évaluation des performances (taux de bonne prédiction, matrices de confusion) et interprétation des résultats à l’aide des effets marginaux et des odds ratios.",
+        tags: ["R","Logit","Machine Learning"],
+        stack: null,
+        github: null,
+        demo: null,
+        pdf: "scoring-credit.pdf",
+        img: null,
+        images: [],
+        company: "Projet universitaire — Master 1",
+        highlights: ["Préparation & dummies","Régression logistique","Accuracy & confusion matrix","Effets marginaux","Odds ratios + graphique"]
+      },
+      {
+        title: "Réglementation des produits bancaires",
+        summary: "Étude complète des produits bancaires et financiers : épargne (court, moyen, long terme), crédits et assurances. Présentation de leurs caractéristiques, avantages, inconvénients et fiscalité.",
+        tags: ["Finance","Banque"],
+        stack: ["Synthèse documentaire"],
+        github: null,
+        demo: null,
+        pdf: "Produits_bancaires.pdf",
+        img: null,
+        images: [],
+        company: "Projet universitaire — Master 1",
+        impact: "Vision globale et structurée de la réglementation des produits bancaires et de leur fiscalité. Consolidation des connaissances en finance et en conformité bancaire.",
+        highlights: ["Produits d’épargne","Crédits bancaires","Produits d’assurance","Aspects fiscaux et réglementaires"]
+      },
+      {
+        title: "Eco Connect — Application RSE pour l’engagement des collaborateurs de Carsat MP",
+        summary: "Conception d’une application mobile pour sensibiliser les employés à la RSE : missions ludiques, système de récompenses, suivi des KPI et interaction sociale.",
+        tags: ["RSE","Communication"],
+        stack: [],
+        github: null,
+        demo: null,
+        pdf: "RSE-projet.pdf",
+        img: null,
+        images: [],
+        company: "Concours RSE — Master 1",
+        impact: "Promotion de la culture RSE à travers une approche ludique et numérique, renforçant l’engagement et la cohésion des collaborateurs.",
+        highlights: ["Application mobile EcoConnect","Système de récompenses","Missions et défis RSE","Suivi des KPI"]
       }
     ];
 
@@ -270,7 +336,8 @@
         grid.innerHTML = '<p class="meta">Aucun projet ne correspond pour l’instant.</p>';
         return;
       }
-      matches.forEach((p, idx)=> grid.appendChild(renderCard(p, idx)));
+      // FIX : utiliser l’index dans le tableau complet, pas l’index filtré
+      matches.forEach((p)=> grid.appendChild(renderCard(p, projects.indexOf(p))));
     }
 
     // initial
@@ -290,7 +357,6 @@
       const p = projects[id];
       if (!p) { console.error('Projet introuvable pour id', id); return; }
 
-      // Si le projet a un PDF, on l’intègre directement dans le modal
       if (p.pdf){
         const pdfSrc = encodeURI(p.pdf);
         modalContent.innerHTML = `
@@ -301,7 +367,7 @@
             <a href="${pdfSrc}" target="_blank" rel="noopener" style="text-decoration:underline">Ouvrir le fichier dans un nouvel onglet</a>
           </div>
           <div style="height:70vh;border-radius:10px;overflow:hidden;background:#f6f8fb;border:1px solid #eef2f7">
-            <iframe src="${pdfSrc}" title="${p.title} — PDF" style="width:100%;height:100%;border:0;" loading="lazy"></iframe>
+            <iframe src="${pdfSrc}" title="${p.title}" style="width:100%;height:100%;border:0;" loading="lazy"></iframe>
           </div>
           ${p.impact?`<p style="margin-top:10px"><strong>Impact :</strong> ${p.impact}</p>`:''}
         `;
