@@ -9,19 +9,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#f5f8fb;
-      --card:#ffffff;
-      --primary:#0b63b7; /* bleu pro */
-      --muted:#6b7280;
-      --glass: rgba(255,255,255,0.6);
-      --radius:14px;
-      --maxw:1100px;
+      --bg:#f5f8fb; --card:#ffffff; --primary:#0b63b7; --muted:#6b7280; --glass: rgba(255,255,255,0.6);
+      --radius:14px; --maxw:1100px;
     }
-
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#111}
-    body{background: linear-gradient(180deg, #eef6ff 0%, var(--bg) 50%);display:flex;justify-content:center;padding:40px 20px}
-    .site{width:100%;max-width:var(--maxw);}
+    body{background: linear-gradient(180deg, #eef6ff 0%, var(--bg) 50%);display:flex;justify-content:center;padding:40px 20px;scroll-behavior:smooth}
+    .site{width:100%;max-width:var(--maxw);}    
 
     /* Header */
     header{display:flex;gap:28px;align-items:center;background:linear-gradient(180deg,var(--card),#fbfdff);padding:30px;border-radius:var(--radius);box-shadow:0 6px 30px rgba(11,99,183,0.08);margin-bottom:26px}
@@ -34,27 +28,26 @@
     .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600;border:1px solid rgba(11,99,183,0.12);background:white}
     .btn.primary{background:var(--primary);color:white;border:none;box-shadow:0 6px 18px rgba(11,99,183,0.12)}
 
-    /* Layout */
-    .grid{display:grid;grid-template-columns:320px 1fr;gap:20px}
-
-    /* Sidebar */
-    aside{background:var(--card);padding:18px;border-radius:12px}
-    .section-title{font-weight:700;margin:0 0 8px;color:#0b63b7}
-    .skills{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{background:linear-gradient(180deg,#f6fbff,#fff);padding:8px 10px;border-radius:999px;border:1px solid rgba(11,99,183,0.06);font-weight:600;font-size:13px;color:#123}
-    .contact a{display:block;color:var(--muted);text-decoration:none;margin-bottom:6px}
-
-    /* Projects area */
+    /* Layout (plus de sidebar compétences) */
     main{min-height:200px}
-    .projects{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+
+    /* Projects */
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 12px}
+    .filter-btn{padding:8px 10px;border-radius:999px;border:1px solid rgba(11,99,183,0.12);background:#fff;font-weight:600;font-size:12px;cursor:pointer}
+    .filter-btn.active{background:var(--primary);color:#fff;border-color:transparent}
+    .search{flex:1;min-width:220px}
+    .search input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(11,99,183,0.18)}
+    .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px} /* 3 par ligne */
     .project{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(12,40,80,0.04);display:flex;gap:12px;align-items:flex-start}
-    .proj-thumb{width:110px;height:80px;border-radius:8px;background:linear-gradient(135deg, rgba(11,99,183,0.08), rgba(11,99,183,0.02));flex:0 0 110px;display:flex;align-items:center;justify-content:center;color:var(--primary);font-weight:700}
+    .proj-thumb{width:110px;height:80px;border-radius:8px;background:linear-gradient(135deg, rgba(11,99,183,0.08), rgba(11,99,183,0.02));flex:0 0 110px;display:flex;align-items:center;justify-content:center;color:var(--primary);font-weight:700;overflow:hidden}
+    .proj-thumb img{width:100%;height:100%;object-fit:cover;display:block}
     .proj-body{flex:1}
     .proj-title{margin:0;font-size:16px;font-weight:700}
     .proj-desc{color:var(--muted);font-size:14px;margin:8px 0}
     .proj-tags{display:flex;gap:8px;flex-wrap:wrap}
     .tag{font-size:12px;padding:6px 8px;border-radius:8px;background:#f3f7fb;color:var(--primary);border:1px solid rgba(11,99,183,0.06)}
-    .proj-actions{margin-top:10px;display:flex;gap:10px}
+    .meta{color:var(--muted);font-size:12px}
+    .proj-actions{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
     .link{font-weight:700;font-size:13px;color:var(--primary);text-decoration:none}
 
     /* Footer */
@@ -63,12 +56,19 @@
     /* Modal */
     .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(6,12,24,0.45);z-index:40}
     .modal.show{display:flex}
-    .modal-card{width:min(780px,96%);background:white;padding:20px;border-radius:12px}
+    .modal-card{
+      width:min(780px,96%);
+      background:white;padding:20px;border-radius:12px;
+      /* >>> MODIF : scroll vertical dans la fenêtre de détails */
+      max-height:90vh;               /* limite à la hauteur d’écran */
+      overflow:auto;                 /* active la barre de défilement */
+      -webkit-overflow-scrolling:touch; /* scroll fluide iOS */
+      overscroll-behavior:contain;   /* évite le scroll de la page derrière */
+    }
     .modal-close{float:right;background:transparent;border:none;font-size:18px}
 
     /* Responsive */
     @media (max-width:900px){
-      .grid{grid-template-columns:1fr;}
       .projects{grid-template-columns:1fr;}
       header{flex-direction:column;align-items:flex-start}
       .avatar{width:96px;height:96px;border-radius:12px}
@@ -77,72 +77,52 @@
 </head>
 <body>
   <div class="site">
-
     <header>
       <div class="avatar">
-        <!-- Remplace l'URL ci-dessous par ta photo (ou importes img/avatar.jpg dans ton repo) -->
-        <img id="avatarImg" src="Profil.jpg" alt="Axel">
+        <img id="avatarImg" src="Profil.jpg" alt="Portrait de Axel" loading="lazy">
       </div>
       <div class="headline">
         <h1 class="name">Axel Ange Yvan LOUKOU</h1>
         <div class="role">Titulaire d’un Master MBFA, spécialité Risque, Assurance, Décision et Mathématique</div>
         <div class="role">Data Analyst (stage de fin d'étude @ Generali France)</div>
         <div class="cta">
-          <a class="btn primary" href="#projects">Mes projets</a>
-          <a class="btn" href="/cv.pdf" target="_blank">Télécharger CV (PDF)</a>
-          <a class="btn" id="contactBtn">Me contacter</a>
+          <!-- Uniquement ces 3 boutons -->
+          <a class="btn primary" href="#projects">Projets</a>
+          <a class="btn" href="#certifications">Certifications</a>
+          <a class="btn" id="contactBtn" href="#contact">Me contacter</a>
         </div>
       </div>
     </header>
 
-    <div class="grid">
-      <aside>
-        <div class="section">
-          <h3 class="section-title">Compétences</h3>
-          <div class="skills" style="margin-bottom:12px;">
-            <span class="chip">Python (Numpy, Pandas, scikit-learn, Matplotlib, Seaborn, TensorFlow)</span>
-            <span class="chip">R</span>
-            <span class="chip">SQL</span>
-            <span class="chip">Excel avancé</span>
-            <span class="chip">VBA</span>
-            <span class="chip">Power BI (Power Query, DAX, M)</span>
-            <span class="chip">Solvabilité 2 (SCR, BE)</span>
-            <span class="chip">RSE</span>
-          </div>
+    <main>
+      <section id="projects" aria-label="Projets">
+        <h2 style="margin:0 0 12px;color:var(--primary)">Projets</h2>
+        <div class="toolbar" aria-label="Filtres projets">
+          <div id="filters" role="tablist" aria-label="Tech"></div>
+          <div class="search"><input id="searchInput" type="search" placeholder="Rechercher un projet (titre, tags, stack)…" aria-label="Rechercher"></div>
         </div>
-      </aside>
+        <div class="projects" id="projectsGrid" aria-live="polite"></div>
+      </section>
 
-      <main>
-        <section id="projects">
-          <h2 style="margin:0 0 12px;color:var(--primary)">Projets</h2>
-
-          <!-- Grid for projects: 2 per row, 3 rows → 6 projects. Rendered by JS for facilité -->
-          <div class="projects" id="projectsGrid">
-            <!-- JS injecte les cartes projets ici -->
-          </div>
-        </section>
-
-        <section style="margin-top:18px">
-          <h2 style="margin:0 0 12px;color:var(--primary)">Certifications</h2>
-          <div style="background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(12,40,80,0.04)">
-            <p style="margin:0"><strong><a href="https://openbadgefactory.com/v1/assertion/4df6f923afa78f6211913717e7fb2ea9c143d69f" target="_blank">Introduction à la statistique avec R</a></strong><small style="color:var(--muted)"> - Université Paris-Saclay</small><br>
-              <ul style="color:var(--muted);margin:6px 0 0 0;padding-left:18px;font-size:13px;">
-                <li>Tests statistiques</li>
-                <li>ACP et classification</li>
-                <li>Régression linéaire simple et multiple, régression logistique</li>
-            </ul>
-          </p>
+      <section id="certifications" style="margin-top:18px">
+        <h2 style="margin:0 0 12px;color:var(--primary)">Certifications</h2>
+        <div style="background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(12,40,80,0.04)">
+          <p style="margin:0"><strong><a href="https://openbadgefactory.com/v1/assertion/4df6f923afa78f6211913717e7fb2ea9c143d69f" target="_blank" rel="noopener">Introduction à la statistique avec R</a></strong><small style="color:var(--muted)"> - Université Paris-Saclay</small></p>
+          <ul style="color:var(--muted);margin:6px 0 0 0;padding-left:18px;font-size:13px;">
+            <li>Tests statistiques</li>
+            <li>ACP et classification</li>
+            <li>Régression linéaire simple et multiple, régression logistique</li>
+          </ul>
           <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong>SAS Certification : SAS 9.4 Advanced Programming Performance</strong><br>
-              <ul style="color:var(--muted);margin:6px 0 0 0;padding-left:18px;font-size:13px;">
-                <li>Utilisation de l'étape DATA pour résoudre des problèmes complexes</li>
-                <li>Ecrire et interpréter du code SAS SQL</li>
-            </ul>
-          </p>
+          <p style="margin:0"><strong>SAS Certification : SAS 9.4 Advanced Programming Performance</strong></p>
+          <ul style="color:var(--muted);margin:6px 0 0 0;padding-left:18px;font-size:13px;">
+            <li>Étape DATA pour résoudre des problèmes complexes</li>
+            <li>Code SAS SQL</li>
+          </ul>
           <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong><a href="https://openbadgefactory.com/v1/assertion/4df6f923afa78f6211913717e7fb2ea9c143d69f" target="_blank">Unlock Your English</a></strong><small style="color:var(--muted)"> - Institut Mines-Télécom - IMT</small></p>
+          <p style="margin:0"><strong><a href="https://openbadgefactory.com/v1/assertion/4df6f923afa78f6211913717e7fb2ea9c143d69f" target="_blank" rel="noopener">Unlock Your English</a></strong><small style="color:var(--muted)"> - Institut Mines-Télécom - IMT</small></p>
           <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong>Réalisez des dashboards avec Power BI</a></strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
+          <p style="margin:0"><strong>Réalisez des dashboards avec Power BI</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
           <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
           <p style="margin:0"><strong>Implémentez vos bases de données relationnelles avec SQL</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
           <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
@@ -152,10 +132,8 @@
           <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
           <p style="margin:0"><strong>Découvrez les librairies Python pour la Data Science</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
         </div>
-        </section>
-
-      </main>
-    </div>
+      </section>
+    </main>
 
     <footer>
       <div>Axel Ange Yvan LOUKOU</div>
@@ -171,42 +149,134 @@
   </div>
 
   <script>
-    // === DONNÉES : remplace par tes projets réels ===
+    // === LISTE DES PROJETS ===
     const projects = [
-      {title:"Analyse de la rentabilité d'un portefeuille clients", summary:"Segmentation RFM, calcul LTV et recommandations pour prioriser la fidélisation.", tags:["Python","Pandas","Visualisation"], github:"https://axeloukou.github.io/axel-portfolio.github.io/projets/projet1_solvabilite2", img:null},
-      {title:"Dashboard Excel — Suivi des ventes", summary:"Tableau de bord Excel automatisé avec macros et KPI mensuels.", tags:["Excel","VBA"], github:"#", img:null},
-      {title:"Automatisation import Outlook → Excel", summary:"Script VBA pour récupérer et consolider un tableau reçu par email toutes les semaines.", tags:["VBA","Outlook"], github:"https://github.com/tonpseudo/vba-outlook" , img:null},
-      {title:"Modèle de valorisation d'options (Black Scholes)", summary:"Notebook Python expliquant la valorisation et les sensibilités (delta, gamma).", tags:["Python","Finance"], github:"https://github.com/tonpseudo/options" , img:null},
-      {title:"Nettoyage & pipeline ETL", summary:"Process ETL en Python pour transformer des données bancaires et éviter les doublons.", tags:["Python","ETL","SQL"], github:"#" , img:null},
-      {title:"Analyse des risques de crédit", summary:"Étude statistique et scoring basique pour segmenter le risque de défaut.", tags:["SQL","Pandas","Stats"], github:"#" , img:null}
+      {
+        title: "Reporting IMPULSO - Power BI",
+        summary: "Automatisation d'un reporting stratégique avec suivi des KPIs IARD et VIE (couverture, multi-équipement, leads, durabilité).",
+        tags: ["Power Query","DAX","SharePoint","Snowflake"],
+        stack: ["Power BI","Excel"],
+        github: null,
+        demo: null,
+        pdf: "reporting-impulso.pdf",   // <= place le fichier ici (à la racine du dépôt)
+        img: null,
+        images: [],
+        company: "Generali France",
+        impact: "Gain de temps mensuel, fiabilisation des indicateurs, meilleure lecture des performances",
+        highlights: ["Filtres dynamiques","Vues Impulso/IARD/Vie","Cibles & écarts"]
+      },
+      {
+        title: "Optimisation de portefeuille — VaR & CVaR sur le CaC40",
+        summary: "Calcul des rendements/risques, optimisation (scipy), visualisations (matplotlib/seaborn).",
+        tags: null,
+        stack: ["Python","Gestion des risques"],
+        github: null,  
+        pdf: "https://nbviewer.org/github/axeloukou/axel-portfolio.github.io/blob/main/CVaR_optimisation.ipynb",
+        demo: null,
+        img: null,
+        images: [],
+        company: "Projet universitaire - Master 2",
+        highlights: ["Sélection du portefeuille","Estimation loi normale","Optimisation CVaR","Visualisations"]
+      },
+      {
+        title: "Analyse de survie — Kaplan–Meier & modèle de Cox",
+        summary: "Synthèse pratique du package survival : préparation des données censurées, courbes de Kaplan–Meier avec ggsurvplot, modèle de Cox, vérification des risques proportionnels (cox.zph) et forest plot.",
+        tags: ["R"],
+        stack: null,
+        github: null,
+        demo: null,
+        // IMPORTANT : lien vers la page HTML rendue (ou lien RPubs si tu publies là-bas)
+        pdf: "document.pdf",
+        img: null,
+        images: [],
+        company: "Projet universitaire — Master 2",
+        impact: "Pipeline reproductible d’analyse de survie avec visualisations et diagnostics ; interprétation lisible des HR et de la médiane de survie.",
+        highlights: ["Recodage des censures","Kaplan–Meier + p-value log-rank","Cox + diagnostics (cox.zph)","Forest plot"]
+      }
     ];
 
-    // === RENDU DES CARTES PROJET ===
+    // === RENDU ===
     const grid = document.getElementById('projectsGrid');
-    projects.forEach((p, i)=>{
+    const filtersEl = document.getElementById('filters');
+    const searchInput = document.getElementById('searchInput');
+
+    function initialsFromTitle(t){
+      return t.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+    }
+
+    function renderCard(p, i){
       const card = document.createElement('article');
       card.className='project';
-
       const thumb = document.createElement('div');
       thumb.className='proj-thumb';
-      thumb.textContent = (p.img)? '' : p.title.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
-
+      if (p.img){
+        const im = document.createElement('img');
+        im.src = p.img; im.alt = `Vignette du projet ${p.title}`; im.loading = 'lazy';
+        thumb.appendChild(im);
+      } else {
+        thumb.textContent = initialsFromTitle(p.title);
+      }
       const body = document.createElement('div');
       body.className='proj-body';
+      const metaLine = [p.company, p.role, p.date].filter(Boolean).join(' • ');
       body.innerHTML = `
         <h3 class="proj-title">${p.title}</h3>
+        ${metaLine?`<div class="meta">${metaLine}</div>`:''}
         <p class="proj-desc">${p.summary}</p>
-        <div class="proj-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="proj-tags">${[...(p.stack||[]),...(p.tags||[])].slice(0,6).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
         <div class="proj-actions">
-          <a class="link" href="${p.github}" target="_blank">Voir GitHub</a>
+          ${p.github?`<a class="link" href="${p.github}" target="_blank" rel="noopener">GitHub</a>`:''}
+          ${p.demo?`<a class="link" href="${p.demo}" target="_blank" rel="noopener">Démo</a>`:''}
           <a class="link" href="#" data-id="${i}" onclick="openModal(event,this)">Détails</a>
         </div>
       `;
+      card.appendChild(thumb); card.appendChild(body);
+      return card;
+    }
 
-      card.appendChild(thumb);
-      card.appendChild(body);
-      grid.appendChild(card);
-    });
+    function uniqueTags(){
+      const set = new Set();
+      projects.forEach(p=>[...(p.tags||[]),...(p.stack||[])].forEach(t=>set.add(t)));
+      return Array.from(set).sort();
+    }
+
+    function renderFilters(){
+      const all = ['Tous', ...uniqueTags()];
+      filtersEl.innerHTML = '';
+      all.forEach((t, idx)=>{
+        const b = document.createElement('button');
+        b.className = 'filter-btn' + (idx===0?' active':'');
+        b.textContent = t; b.setAttribute('role','tab'); b.dataset.tag = t;
+        b.addEventListener('click', ()=>{
+          document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+          b.classList.add('active');
+          applyFilters();
+        });
+        filtersEl.appendChild(b);
+      });
+    }
+
+    function applyFilters(){
+      const active = document.querySelector('.filter-btn.active')?.dataset.tag || 'Tous';
+      const q = searchInput.value.trim().toLowerCase();
+      const matches = projects.filter(p=>{
+        const hay = [p.title, p.summary, ...(p.tags||[]), ...(p.stack||[])].join(' ').toLowerCase();
+        const byTag = (active==='Tous') || (p.tags||[]).concat(p.stack||[]).includes(active);
+        const bySearch = !q || hay.includes(q);
+        return byTag && bySearch;
+      });
+      grid.innerHTML='';
+      if(matches.length===0){
+        grid.innerHTML = '<p class="meta">Aucun projet ne correspond pour l’instant.</p>';
+        return;
+      }
+      matches.forEach((p, idx)=> grid.appendChild(renderCard(p, idx)));
+    }
+
+    // initial
+    renderFilters();
+    applyFilters();
+    searchInput.addEventListener('input', applyFilters);
 
     // === MODAL ===
     const modal = document.getElementById('modal');
@@ -216,14 +286,40 @@
     function openModal(e, el){
       e.preventDefault();
       const id = Number(el.getAttribute('data-id'));
+      if (Number.isNaN(id)) { console.error('ID invalide'); return; }
       const p = projects[id];
+      if (!p) { console.error('Projet introuvable pour id', id); return; }
+
+      // Si le projet a un PDF, on l’intègre directement dans le modal
+      if (p.pdf){
+        const pdfSrc = encodeURI(p.pdf);
+        modalContent.innerHTML = `
+          <h2 style="margin-top:0">${p.title}</h2>
+          <p class="meta">${[p.company, p.role, p.date].filter(Boolean).join(' • ')}</p>
+          <p style="color:var(--muted)">${p.summary}</p>
+          <div style="margin:12px 0;">
+            <a href="${pdfSrc}" target="_blank" rel="noopener" style="text-decoration:underline">Ouvrir le fichier dans un nouvel onglet</a>
+          </div>
+          <div style="height:70vh;border-radius:10px;overflow:hidden;background:#f6f8fb;border:1px solid #eef2f7">
+            <iframe src="${pdfSrc}" title="${p.title} — PDF" style="width:100%;height:100%;border:0;" loading="lazy"></iframe>
+          </div>
+          ${p.impact?`<p style="margin-top:10px"><strong>Impact :</strong> ${p.impact}</p>`:''}
+        `;
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden','false');
+        return;
+      }
+
+      const gallery = (p.images||[]).slice(0,4).map(src=>`<img src="${src}" alt="Capture ${p.title}" loading="lazy" style="width:100%;border-radius:10px;margin:6px 0;">`).join('');
+      const points = (p.highlights||[]).map(h=>`<li>${h}</li>`).join('');
+
       modalContent.innerHTML = `
         <h2 style="margin-top:0">${p.title}</h2>
+        <p class="meta">${[p.company, p.role, p.date].filter(Boolean).join(' • ')}</p>
         <p style="color:var(--muted)">${p.summary}</p>
-        <p><strong>Compétences :</strong> ${p.tags.join(', ')}</p>
-        <p><a href="${p.github}" target="_blank">Voir le dépôt / fichiers</a></p>
-        <hr>
-        <p style="color:var(--muted)">Remplace ce texte par une description complète : objectifs, jeu de données, étapes, code, résultats chiffrés et capture(s) d'écran (upload dans le repo).</p>
+        ${p.impact?`<p><strong>Impact :</strong> ${p.impact}</p>`:''}
+        ${points?`<ul>${points}</ul>`:''}
+        ${gallery}
       `;
       modal.classList.add('show');
       modal.setAttribute('aria-hidden','false');
@@ -231,20 +327,22 @@
 
     modalClose.addEventListener('click', ()=>{ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); });
     modal.addEventListener('click', (evt)=>{ if(evt.target===modal) { modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); }});
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.classList.contains('show')){ modal.classList.remove('show'); modal.setAttribute('aria-hidden','true'); }});
 
-    // Contact quick action
-    document.getElementById('contactBtn').addEventListener('click', ()=>{
-      modalContent.innerHTML = `
+    // === CONTACT (ouvre le modal) ===
+    document.getElementById('contactBtn').addEventListener('click', (e)=>{
+      e.preventDefault();
+      const contactHtml = `
         <h2 style="margin-top:0">Contact</h2>
         <p style="color:var(--muted)">Vous pouvez me contacter via les moyens suivants :</p>
         <p><strong>Email :</strong> <a href="mailto:axeloukou@gmail.com">axeloukou@gmail.com</a></p>
-        <p><strong>LinkedIn :</strong> <a href="http://www.linkedin.com/in/axel-loukou" target="_blank">Axel-Loukou_LinkedIn</a></p>
-        <p><strong>N° de téléphone :</strong> <a href="tel:+33766029171">+33 7 66 02 91 71 </a></p>
+        <p><strong>LinkedIn :</strong> <a href="http://www.linkedin.com/in/axel-loukou" target="_blank" rel="noopener">Axel-Loukou_LinkedIn</a></p>
+        <p><strong>N° de téléphone :</strong> <a href="tel:+33766029171">+33 7 66 02 91 71</a></p>
       `;
+      modalContent.innerHTML = contactHtml;
       modal.classList.add('show');
       modal.setAttribute('aria-hidden','false');
     });
-
   </script>
 </body>
 </html>
