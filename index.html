@@ -50,6 +50,12 @@
     .proj-actions{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
     .link{font-weight:700;font-size:13px;color:var(--primary);text-decoration:none}
 
+    /* Certifications */
+    .cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .cert-card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(12,40,80,0.04)}
+    .cert-card p{margin:0}
+    .cert-card ul{color:var(--muted);margin:6px 0 0 0;padding-left:18px;font-size:13px}
+
     /* Footer */
     footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
 
@@ -71,6 +77,7 @@
       .projects{grid-template-columns:1fr;}
       header{flex-direction:column;align-items:flex-start}
       .avatar{width:96px;height:96px;border-radius:12px}
+      .cert-grid{grid-template-columns:1fr;}
     }
   </style>
 </head>
@@ -104,31 +111,47 @@
 
       <section id="certifications" style="margin-top:18px">
         <h2 style="margin:0 0 12px;color:var(--primary)">Certifications</h2>
-        <div style="background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(12,40,80,0.04)">
-          <p style="margin:0"><strong><a href="https://openbadgefactory.com/v1/assertion/4df6f923afa78f6211913717e7fb2ea9c143d69f" target="_blank" rel="noopener">Introduction à la statistique avec R</a></strong><small style="color:var(--muted)"> - Université Paris-Saclay</small></p>
-          <ul style="color:var(--muted);margin:6px 0 0 0;padding-left:18px;font-size:13px;">
-            <li>Tests statistiques</li>
-            <li>ACP et classification</li>
-            <li>Régression linéaire simple et multiple, régression logistique</li>
-          </ul>
-          <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong>SAS Certification : SAS 9.4 Advanced Programming Performance</strong></p>
-          <ul style="color:var(--muted);margin:6px 0 0 0;padding-left:18px;font-size:13px;">
-            <li>Étape DATA pour résoudre des problèmes complexes</li>
-            <li>Code SAS SQL</li>
-          </ul>
-          <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong><a href="https://openbadgefactory.com/v1/assertion/4df6f923afa78f6211913717e7fb2ea9c143d69f" target="_blank" rel="noopener">Unlock Your English</a></strong><small style="color:var(--muted)"> - Institut Mines-Télécom - IMT</small></p>
-          <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong>Réalisez des dashboards avec Power BI</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
-          <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong>Implémentez vos bases de données relationnelles avec SQL</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
-          <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong>Perfectionnez-vous sur Excel & Découvrez les fondamentaux VBA</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
-          <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong>Initiez-vous à Python pour l'analyse de données</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
-          <hr style="border:none;border-top:1px solid #f3f5f8;margin:12px 0">
-          <p style="margin:0"><strong>Découvrez les librairies Python pour la Data Science</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
+        <div class="cert-grid">
+          <article class="cert-card">
+            <p><strong><a href="https://openbadgefactory.com/v1/assertion/4df6f923afa78f6211913717e7fb2ea9c143d69f" target="_blank" rel="noopener">Introduction à la statistique avec R</a></strong><small style="color:var(--muted)"> - Université Paris-Saclay</small></p>
+            <ul>
+              <li>Tests statistiques</li>
+              <li>ACP et classification</li>
+              <li>Régression linéaire simple et multiple, régression logistique</li>
+            </ul>
+          </article>
+
+          <article class="cert-card">
+            <p><strong>SAS Certification : SAS 9.4 Advanced Programming Performance</strong></p>
+            <ul>
+              <li>Étape DATA pour résoudre des problèmes complexes</li>
+              <li>Code SAS SQL</li>
+            </ul>
+          </article>
+
+          <article class="cert-card">
+            <p><strong><a href="https://openbadgefactory.com/v1/assertion/4df6f923afa78f6211913717e7fb2ea9c143d69f" target="_blank" rel="noopener">Unlock Your English</a></strong><small style="color:var(--muted)"> - Institut Mines-Télécom - IMT</small></p>
+          </article>
+
+          <article class="cert-card">
+            <p><strong>Réalisez des dashboards avec Power BI</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
+          </article>
+
+          <article class="cert-card">
+            <p><strong>Implémentez vos bases de données relationnelles avec SQL</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
+          </article>
+
+          <article class="cert-card">
+            <p><strong>Perfectionnez-vous sur Excel &amp; Découvrez les fondamentaux VBA</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
+          </article>
+
+          <article class="cert-card">
+            <p><strong>Initiez-vous à Python pour l'analyse de données</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
+          </article>
+
+          <article class="cert-card">
+            <p><strong>Découvrez les librairies Python pour la Data Science</strong><small style="color:var(--muted)"> - OpenClassroom</small></p>
+          </article>
         </div>
       </section>
     </main>
