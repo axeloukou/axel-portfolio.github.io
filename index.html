@@ -251,6 +251,29 @@
         highlights: ["Filtres dynamiques","Vues Impulso/IARD/Vie","Cibles & écarts"]
       },
       {
+        title: "Tarification auto — Réassurance",
+        summary: "Calcul de la prime pure, du ratio Sinistre/Prime, revalorisation des montants, GLM fréquence/sévérité, tarifs par profil + Burning-Cost",
+        tags: ["Assurance","Risque","GLM"],
+        stack: ["R"],
+        github: null,
+        demo: null,
+        pdf: "projet_reassurance_code.html",  // fichier HTML à la racine du dépôt
+        img: null,
+        images: [],
+        company: "Projet universitaire — Master MBFA (Assurance & Réassurance)",
+        impact: "Illustration quantitative de l’effet stabilisateur de la réassurance sur le risque et du compromis entre coût et volatilité du portefeuille.",
+        highlights: [
+          "13 variables / 16 181 obs. consolidées",
+          "Prime pure ≈ 3 010,69 € validée par 2 méthodes",
+          "Ratio S/P ≈ 10,96 %",
+          "Revalorisation 2025 & statistiques 'as-if'",
+          "GLM Poisson (offset log(Exposure)) & Gamma (log)",
+          "Tarifs par profil (ex. ≈ 3 254,56 €)",
+          "Burning-Cost XL (1,5M/4,4M) ≈ 44,66 %"
+        ],
+        protect: true
+      },
+      {
         title: "Optimisation de portefeuille — VaR & CVaR sur le CaC40",
         summary: "Calcul des rendements/risques, optimisation (scipy), visualisations (matplotlib/seaborn).",
         tags: ["Finance"],
