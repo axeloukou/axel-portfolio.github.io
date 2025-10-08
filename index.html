@@ -447,23 +447,40 @@
 
       if (p.pdf){
         const pdfSrc = encodeURI(p.pdf);
+        // ✅ Afficher l’alerte uniquement pour ce projet + quand l’URL passe par nbviewer
+        const needsFallback =
+          p.title.includes("Optimisation de portefeuille") && /nbviewer/.test(pdfSrc);
+      
         modalContent.innerHTML = `
           <h2 style="margin-top:0">${p.title}</h2>
           <p class="meta">${[p.company, p.role, p.date].filter(Boolean).join(' • ')}</p>
           <p style="color:var(--muted)">${p.summary}</p>
+      
+          ${needsFallback ? `
+            <div class="meta" style="margin:8px 0 12px; padding:8px 10px; border:1px dashed #e5eaf1; border-radius:8px;">
+              ⚠️ Si le rendu ne s’affiche pas (nbviewer saturé),
+              ouvrez directement le notebook sur GitHub :
+              <a class="link" href="https://github.com/axeloukou/axel-portfolio.github.io/blob/main/CVaR_optimisation.ipynb"
+                 target="_blank" rel="noopener">CVaR_optimisation.ipynb</a>
+            </div>
+          ` : ''}
+      
           <div style="margin:12px 0;">
-            <a href="${pdfSrc}" target="_blank" rel="noopener" style="text-decoration:underline">Ouvrir le fichier dans un nouvel onglet</a>
+            <a href="${pdfSrc}" target="_blank" rel="noopener" style="text-decoration:underline">
+              Ouvrir le fichier dans un nouvel onglet
+            </a>
           </div>
+      
           <div style="height:70vh;border-radius:10px;overflow:hidden;background:#f6f8fb;border:1px solid #eef2f7">
             <iframe src="${pdfSrc}" title="${p.title}" style="width:100%;height:100%;border:0;" loading="lazy"></iframe>
           </div>
+      
           ${p.impact?`<p style="margin-top:10px"><strong>Impact :</strong> ${p.impact}</p>`:''}
         `;
         modal.classList.add('show');
         modal.setAttribute('aria-hidden','false');
         return;
       }
-
       const gallery = (p.images||[]).slice(0,4).map(src=>`<img src="${src}" alt="Capture ${p.title}" loading="lazy" style="width:100%;border-radius:10px;margin:6px 0;">`).join('');
       const points = (p.highlights||[]).map(h=>`<li>${h}</li>`).join('');
 
