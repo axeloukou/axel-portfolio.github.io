@@ -220,13 +220,8 @@
       </section>
     </main>
 
-    <!-- footer avec compteurs visibles -->
     <footer>
-      <div>
-        Axel Ange Yvan LOUKOU ·
-        <span id="visitsCount" title="Visites du site">—</span> visites ·
-        <span id="detailsCount" title="Ouvertures de “Détails”">—</span> ouvertures
-      </div>
+      <div>Axel Ange Yvan LOUKOU</div>
     </footer>
   </div>
 
@@ -262,7 +257,7 @@
         stack: ["R"],
         github: null,
         demo: null,
-        pdf: "projet_reassurance_code.html",
+        pdf: "projet_reassurance_code.html",  // fichier HTML à la racine du dépôt
         img: null,
         images: [],
         company: "Projet universitaire — Master MBFA (Assurance & Réassurance)",
@@ -392,7 +387,7 @@
       thumb.className='proj-thumb';
       if (p.img){
         const im = document.createElement('img');
-        im.src = p.img; im.alt = `Vignette du projet ${p.title}`; im.loading = 'lazy'; im.width=110; im.height=80;
+        im.src = p.img; im.alt = Vignette du projet ${p.title}; im.loading = 'lazy'; im.width=110; im.height=80;
         thumb.appendChild(im);
       } else {
         thumb.textContent = initialsFromTitle(p.title);
@@ -400,17 +395,17 @@
       const body = document.createElement('div');
       body.className='proj-body';
       const metaLine = [p.company, p.role, p.date].filter(Boolean).join(' • ');
-      body.innerHTML = `
+      body.innerHTML = 
         <h3 class="proj-title">${p.title}</h3>
-        ${metaLine?`<div class="meta">${metaLine}</div>`:''}
+        ${metaLine?<div class="meta">${metaLine}</div>:''}
         <p class="proj-desc">${p.summary}</p>
-        <div class="proj-tags">${[...(p.stack||[]),...(p.tags||[])].slice(0,6).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="proj-tags">${[...(p.stack||[]),...(p.tags||[])].slice(0,6).map(t=><span class="tag">${t}</span>).join('')}</div>
         <div class="proj-actions">
-          ${p.github?`<a class="link" href="${p.github}" target="_blank" rel="noopener">GitHub</a>`:''}
-          ${p.demo?`<a class="link" href="${p.demo}" target="_blank" rel="noopener">Démo</a>`:''}
+          ${p.github?<a class="link" href="${p.github}" target="_blank" rel="noopener">GitHub</a>:''}
+          ${p.demo?<a class="link" href="${p.demo}" target="_blank" rel="noopener">Démo</a>:''}
           <a class="link" href="#" data-id="${i}" onclick="openModal(event,this)">Détails</a>
         </div>
-      `;
+      ;
       card.appendChild(thumb); card.appendChild(body);
       return card;
     }
@@ -475,22 +470,23 @@
 
       if (p.pdf){
         const pdfSrc = encodeURI(p.pdf);
+        // ✅ Afficher l’alerte uniquement pour ce projet + quand l’URL passe par nbviewer
         const needsFallback =
           p.title.includes("Optimisation de portefeuille") && /nbviewer/.test(pdfSrc);
       
-        modalContent.innerHTML = `
+        modalContent.innerHTML = 
           <h2 style="margin-top:0">${p.title}</h2>
           <p class="meta">${[p.company, p.role, p.date].filter(Boolean).join(' • ')}</p>
           <p style="color:var(--muted)">${p.summary}</p>
       
-          ${needsFallback ? `
+          ${needsFallback ? 
             <div class="meta" style="margin:8px 0 12px; padding:8px 10px; border:1px dashed #e5eaf1; border-radius:8px;">
               ⚠️ Si le rendu ne s’affiche pas (nbviewer saturé),
               ouvrez directement le notebook sur GitHub :
               <a class="link" href="https://github.com/axeloukou/axel-notebook/blob/main/CVaR_optimisation.ipynb"
                  target="_blank" rel="noopener">CVaR_optimisation.ipynb</a>
             </div>
-          ` : ''}
+           : ''}
       
           <div style="margin:12px 0;">
             <a href="${pdfSrc}" target="_blank" rel="noopener" style="text-decoration:underline">
@@ -502,23 +498,23 @@
             <iframe src="${pdfSrc}" title="${p.title}" style="width:100%;height:100%;border:0;" loading="lazy"></iframe>
           </div>
       
-          ${p.impact?`<p style="margin-top:10px"><strong>Impact :</strong> ${p.impact}</p>`:''}
-        `;
+          ${p.impact?<p style="margin-top:10px"><strong>Impact :</strong> ${p.impact}</p>:''}
+        ;
         modal.classList.add('show');
         modal.setAttribute('aria-hidden','false');
         return;
       }
-      const gallery = (p.images||[]).slice(0,4).map(src=>`<img src="${src}" alt="Capture ${p.title}" loading="lazy" style="width:100%;border-radius:10px;margin:6px 0;">`).join('');
-      const points = (p.highlights||[]).map(h=>`<li>${h}</li>`).join('');
+      const gallery = (p.images||[]).slice(0,4).map(src=><img src="${src}" alt="Capture ${p.title}" loading="lazy" style="width:100%;border-radius:10px;margin:6px 0;">).join('');
+      const points = (p.highlights||[]).map(h=><li>${h}</li>).join('');
 
-      modalContent.innerHTML = `
+      modalContent.innerHTML = 
         <h2 style="margin-top:0">${p.title}</h2>
         <p class="meta">${[p.company, p.role, p.date].filter(Boolean).join(' • ')}</p>
         <p style="color:var(--muted)">${p.summary}</p>
-        ${p.impact?`<p><strong>Impact :</strong> ${p.impact}</p>`:''}
-        ${points?`<ul>${points}</ul>`:''}
+        ${p.impact?<p><strong>Impact :</strong> ${p.impact}</p>:''}
+        ${points?<ul>${points}</ul>:''}
         ${gallery}
-      `;
+      ;
       modal.classList.add('show');
       modal.setAttribute('aria-hidden','false');
     }
@@ -531,13 +527,13 @@
     document.getElementById('contactBtn').addEventListener('click', (e)=>{
       e.preventDefault();
       lockBody(true);
-      const contactHtml = `
+      const contactHtml = 
         <h2 style="margin-top:0">Contact</h2>
         <p style="color:var(--muted)">Vous pouvez me contacter via les moyens suivants :</p>
         <p><strong>Email :</strong> <a href="mailto:axeloukou@gmail.com">axeloukou@gmail.com</a></p>
         <p><strong>LinkedIn :</strong> <a href="http://www.linkedin.com/in/axel-loukou" target="_blank" rel="noopener">Axel-Loukou_LinkedIn</a></p>
         <p><strong>N° de téléphone :</strong> <a href="tel:+33766029171">+33 7 66 02 91 71</a></p>
-      `;
+      ;
       modalContent.innerHTML = contactHtml;
       modal.classList.add('show');
       modal.setAttribute('aria-hidden','false');
@@ -548,58 +544,6 @@
       entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target);} });
     },{threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-  </script>
-
-  <!-- ========= Analytics gratuit (CountAPI) : visites + clics ========= -->
-  <script>
-    (function(){
-      const NS = "axel_portfolio_counter_v1";
-      const $ = (s)=>document.querySelector(s);
-      const fmt = (n)=> Number.isFinite(n) ? n.toLocaleString('fr-FR') : '—';
-
-      // Affiche les compteurs actuels (utile si hit échoue ou bloqué)
-      function refreshCounts(){
-        fetch(`https://api.countapi.xyz/get/${NS}/visites_totales`)
-          .then(r=>r.json()).then(j=>{ if($('#visitsCount')) $('#visitsCount').textContent = fmt(j.value); })
-          .catch(()=>{ if($('#visitsCount')) $('#visitsCount').textContent = '—'; });
-
-        fetch(`https://api.countapi.xyz/get/${NS}/clics_details_total`)
-          .then(r=>r.json()).then(j=>{ if($('#detailsCount')) $('#detailsCount').textContent = fmt(j.value); })
-          .catch(()=>{ if($('#detailsCount')) $('#detailsCount').textContent = '—'; });
-      }
-
-      // +1 visite puis rafraîchit l’affichage
-      function bumpVisit(){
-        fetch(`https://api.countapi.xyz/hit/${NS}/visites_totales`)
-          .catch(()=>{})
-          .finally(refreshCounts);
-      }
-
-      // +1 total détails
-      function bumpDetailsTotal(){
-        fetch(`https://api.countapi.xyz/hit/${NS}/clics_details_total`).catch(()=>{}).finally(refreshCounts);
-      }
-
-      // +1 par projet
-      function bumpPerProject(title){
-        const key = 'open_project_' + encodeURIComponent(title || 'unknown');
-        fetch(`https://api.countapi.xyz/hit/${NS}/${key}`).catch(()=>{});
-      }
-
-      // branchement sur les liens "Détails"
-      document.addEventListener('click', (e)=>{
-        const link = e.target.closest('a.link[data-id]');
-        if(!link) return;
-        const id = Number(link.getAttribute('data-id'));
-        const p = (window.projects || [])[id];
-        bumpPerProject(p?.title);
-        bumpDetailsTotal();
-      });
-
-      // au chargement : afficher ce qui existe, puis incrémenter la visite et ré-afficher
-      refreshCounts();
-      bumpVisit();
-    })();
   </script>
 </body>
 </html>
