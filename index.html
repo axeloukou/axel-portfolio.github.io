@@ -549,76 +549,48 @@
 
   <!-- ========= Compteur GitHub Actions : visites + ouvertures ========= -->
   <script>
-    (async function(){
-      const OWNER = "axeloukou";
-      const REPO = "axel-portfolio.github.io";
-      const FILE_PATH = "data/stats.json";
-      const BRANCH = "main";
-      const footer = document.getElementById('visitCount');
-      const fmt = n => (typeof n === "number" ? n.toLocaleString('fr-FR') : "0");
+(function(){
+  const WORKER_URL = "https://shrill-rice-277f.axeloukou.workers.dev/";
+  const RAW_URL = "https://raw.githubusercontent.com/axeloukou/axel-portfolio.github.io/main/data/stats.json";
+  const footer = document.getElementById('visitCount');
 
-      // 1) Lecture des stats depuis GitHub (raw)
-      async function getStats(){
-        const url = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${FILE_PATH}`;
-        const res = await fetch(url, {cache:'no-store'});
-        return await res.json();
-      }
+  const fmt = n => (typeof n === "number" ? n.toLocaleString('fr-FR') : "0");
 
-      // 2) Affichage
-      function updateFooter(stats){
-        footer.textContent = `👁️ ${fmt(stats.visites)} visites · 📄 ${fmt(stats.details)} ouvertures`;
-      }
+  async function refreshStats(){
+    try{
+      const res = await fetch(RAW_URL, { cache: 'no-store' });
+      const stats = await res.json();
+      if (footer) footer.textContent =
+        `👁️ ${fmt(stats.visites)} visites · 📄 ${fmt(stats.details)} ouvertures`;
+    }catch(_){}
+  }
 
-      // 3) Déclenchement incrément visites via un proxy serveur (pour ajouter Authorization)
-      async function triggerIncrement(){
-        try{
-          // 👉 Remplace PROXY_DISPATCH_URL par l’URL de ton proxy (Pages Functions/Worker)
-          // qui appelle l’API GitHub: POST /repos/{owner}/{repo}/dispatches {event_type:"update_stats"}
-          const PROXY_DISPATCH_URL = "/api/repository-dispatch"; // ex. /api/repository-dispatch
-          await fetch(PROXY_DISPATCH_URL, {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({ event_type: 'update_stats' })
-          });
-        }catch(e){/* silencieux */}
-      }
-
-      // (Optionnel) Déclencher un event pour "details"
-      async function triggerDetails(projectTitle){
-        try{
-          const PROXY_DISPATCH_URL = "/api/repository-dispatch";
-          await fetch(PROXY_DISPATCH_URL, {
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({ event_type: 'update_details', client_payload: { title: projectTitle } })
-          });
-        }catch(e){/* silencieux */}
-      }
-
-      // Lecture initiale + affichage
-      let stats = await getStats();
-      updateFooter(stats);
-
-      // Incrémente "visites" une fois par session
-      if(!sessionStorage.getItem('visited')){
-        triggerIncrement();
-        sessionStorage.setItem('visited','1');
-      }
-
-      // Clic sur “Détails” : +1 local + optional dispatch serveur
-      document.addEventListener('click',(e)=>{
-        const link = e.target.closest('a.link[data-id]');
-        if(!link) return;
-        const id = Number(link.getAttribute('data-id'));
-        const p = (window.projects || [])[id];
-        const title = p && p.title ? p.title : 'unknown';
-        // Affichage immédiat
-        stats.details = (stats.details || 0) + 1;
-        updateFooter(stats);
-        // Optionnel: push serveur pour stats globales
-        // triggerDetails(title);
+  async function fire(eventType){
+    try{
+      await fetch(WORKER_URL, {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ event: eventType })
       });
-    })();
-  </script>
+    }catch(_){}
+  }
+
+  // 1) Incrémente 1 fois par session (visite)
+  if (!sessionStorage.getItem('v1')) {
+    fire('update_stats').then(refreshStats);
+    sessionStorage.setItem('v1', '1');
+  } else {
+    refreshStats();
+  }
+
+  // 2) Incrémente à chaque clic sur "Détails"
+  document.addEventListener('click', (e)=>{
+    const link = e.target.closest('a.link[data-id]');
+    if (!link) return;
+    fire('update_details').then(refreshStats);
+  });
+})();
+</script>
+
 </body>
 </html>
