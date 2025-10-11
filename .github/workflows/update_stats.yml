@@ -1,10 +1,17 @@
 name: Update Stats
+
 on:
   repository_dispatch:
     types: [update_stats, update_details]
+  workflow_dispatch:
 
 permissions:
   contents: write
+
+# Évite les exécutions concurrentes
+concurrency:
+  group: update-stats
+  cancel-in-progress: false
 
 jobs:
   update:
@@ -13,34 +20,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          token: ${{ secrets.GITHUB_TOKEN }}      # push autorisé
+          persist-credentials: true
           fetch-depth: 0
 
       - name: Configure Git
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
 
-      - name: Increment visits or details
+      - name: Update stats.json
+        env:
+          WHAT: ${{ github.event.action }}       # "update_stats" ou "update_details"
+        shell: bash
         run: |
+          set -e
           mkdir -p data
           if [ ! -f data/stats.json ]; then
             echo '{"visites":0,"details":0}' > data/stats.json
           fi
-          node <<'EOF'
-          const fs=require('fs');
-          const path='data/stats.json';
-          const stats=JSON.parse(fs.readFileSync(path,'utf8'));
-          const ev=process.env.EVENT_TYPE;
-          if(ev==='update_stats') stats.visites++;
-          else if(ev==='update_details') stats.details++;
-          fs.writeFileSync(path,JSON.stringify(stats,null,2));
-          EOF
-        env:
-          EVENT_TYPE: ${{ github.event.action }}
-
-      - name: Commit and push changes
-        run: |
+          node -e 'const fs=require("fs"),p="data/stats.json";const s=JSON.parse(fs.readFileSync(p,"utf8")); if(process.env.WHAT==="update_details") s.details++; else s.visites++; fs.writeFileSync(p, JSON.stringify(s,null,2));'
           git add data/stats.json
-          git commit -m "stats: ${{ github.event.action }}" || echo "Pas de changement"
+          # ⚠️ Ne pas échouer si rien à commit
+          if git diff --cached --quiet; then
+            echo "No change in stats.json — skipping commit."
+            exit 0
+          fi
+          git commit -m "stats: update_stats"
           git push
