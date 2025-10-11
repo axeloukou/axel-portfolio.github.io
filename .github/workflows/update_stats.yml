@@ -1,6 +1,5 @@
 name: Update Stats
 on:
-  workflow_dispatch:
   repository_dispatch:
     types: [update_stats, update_details]
 
@@ -11,8 +10,10 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Configure Git
@@ -20,11 +21,8 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
 
-      - name: Update counters
-        env:
-          EVENT_TYPE: ${{ github.event.action }}
+      - name: Increment visits or details
         run: |
-          echo "Event: ${EVENT_TYPE}"
           mkdir -p data
           if [ ! -f data/stats.json ]; then
             echo '{"visites":0,"details":0}' > data/stats.json
@@ -32,12 +30,17 @@ jobs:
           node <<'EOF'
           const fs=require('fs');
           const path='data/stats.json';
-          const e=process.env.EVENT_TYPE || 'update_stats';
-          const s=JSON.parse(fs.readFileSync(path,'utf8'));
-          if(e==='update_details'){ s.details=(s.details||0)+1; }
-          else { s.visites=(s.visites||0)+1; }
-          fs.writeFileSync(path, JSON.stringify(s,null,2));
+          const stats=JSON.parse(fs.readFileSync(path,'utf8'));
+          const ev=process.env.EVENT_TYPE;
+          if(ev==='update_stats') stats.visites++;
+          else if(ev==='update_details') stats.details++;
+          fs.writeFileSync(path,JSON.stringify(stats,null,2));
           EOF
+        env:
+          EVENT_TYPE: ${{ github.event.action }}
+
+      - name: Commit and push changes
+        run: |
           git add data/stats.json
-          git commit -m "stats: ${EVENT_TYPE}" || echo "No changes"
+          git commit -m "stats: ${{ github.event.action }}" || echo "Pas de changement"
           git push
