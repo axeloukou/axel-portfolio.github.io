@@ -547,42 +547,60 @@
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   </script>
 
-  <!-- ========= Analytics gratuit (CountAPI) : visites + clics ========= -->
-  <script>
-    (function(){
-      const NAMESPACE = "axel_portfolio_counter_v1";
-
-      // 1) Visites (page view) — on incrémente puis on affiche la valeur
-      fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/visites_totales`)
-        .then(()=> fetch(`https://api.countapi.xyz/get/${NAMESPACE}/visites_totales`))
-        .then(r=>r.json())
-        .then(d=>{
-          const el=document.getElementById('visitCount');
-          if(el && d && typeof d.value==="number"){
-            el.textContent = `👁️ ${d.value.toLocaleString('fr-FR')} visites`;
-          }
+    <script>
+  (async function(){
+    const OWNER = "axeloukou";
+    const REPO = "axel-portfolio.github.io";
+    const FILE_PATH = "data/stats.json";
+    const BRANCH = "main";
+  
+    const footer = document.getElementById('visitCount');
+    const fmt = n => (typeof n === "number" ? n.toLocaleString('fr-FR') : "0");
+  
+    // 1️⃣ Lecture du fichier JSON sur GitHub
+    async function getStats(){
+      const url = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${FILE_PATH}`;
+      const res = await fetch(url, {cache:'no-store'});
+      return await res.json();
+    }
+  
+    // 2️⃣ Mise à jour de l'affichage
+    function updateFooter(stats){
+      footer.textContent = `👁️ ${fmt(stats.visites)} visites · 📄 ${fmt(stats.details)} ouvertures`;
+    }
+  
+    const stats = await getStats();
+    updateFooter(stats);
+  
+    // 3️⃣ Incrément localement puis déclenche GitHub Action
+    async function triggerIncrement(){
+      await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/dispatches`,{
+        method:'POST',
+        headers:{
+          'Accept':'application/vnd.github+json',
+          'Authorization':'token ' + '<SECRET_PLACEHOLDER>',
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify({
+          event_type: 'update_stats'
         })
-        .catch(()=>{ /* silencieux */ });
-
-      // 2) Clics sur "Détails" (détection sans modifier ton code)
-      document.addEventListener('click', (e)=>{
-        const link = e.target.closest('a.link[data-id]');
-        if (!link) return;
-        const id = Number(link.getAttribute('data-id'));
-        const p = (window.projects || [])[id];
-        const title = p && p.title ? p.title : 'unknown';
-        const key = 'open_project_' + encodeURIComponent(title);
-        fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${key}`).catch(()=>{});
       });
-
-      // 3) Clic sur "Me contacter"
-      const contactBtn = document.getElementById('contactBtn');
-      if (contactBtn){
-        contactBtn.addEventListener('click', ()=>{
-          fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/contact_open`).catch(()=>{});
-        });
-      }
-    })();
+    }
+  
+    // On n'incrémente qu'une fois par visite (session)
+    if(!sessionStorage.getItem('visited')){
+      triggerIncrement();
+      sessionStorage.setItem('visited','1');
+    }
+  
+    // 4️⃣ Quand on clique sur Détails : incrément localement (pour affichage immédiat)
+    document.addEventListener('click',(e)=>{
+      const link = e.target.closest('a.link[data-id]');
+      if(!link) return;
+      stats.details++;
+      updateFooter(stats);
+    });
+  })();
   </script>
 </body>
 </html>
