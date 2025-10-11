@@ -545,23 +545,22 @@
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   </script>
 
-  <!-- ========= Compteur GitHub Actions : visites + ouvertures ========= -->
+  <!-- ========= Compteur GitHub Actions : visites + ouvertures (invisible) ========= -->
   <script>
 (function(){
   const WORKER_URL = "https://shrill-rice-277f.axeloukou.workers.dev/";
   const RAW_URL = "https://raw.githubusercontent.com/axeloukou/axel-portfolio.github.io/main/data/stats.json";
-  const footer = document.getElementById('visitCount');
+  const footer = document.getElementById('visitCount'); // élément absent = pas d'affichage
 
-  const fmt = n => (typeof n === "number" ? n.toLocaleString('fr-FR') : "0");
-
-  async function refreshStats(){
+  // Ne télécharge PAS les stats si aucun élément d'affichage
+  const refreshStats = footer ? async function(){
     try{
       const res = await fetch(RAW_URL, { cache: 'no-store' });
       const stats = await res.json();
-      if (footer) footer.textContent =
-        `👁️ ${fmt(stats.visites)} visites · 📄 ${fmt(stats.details)} ouvertures`;
+      const fmt = n => (typeof n === "number" ? n.toLocaleString('fr-FR') : "0");
+      footer.textContent = `👁️ ${fmt(stats.visites)} visites · 📄 ${fmt(stats.details)} ouvertures`;
     }catch(_){}
-  }
+  } : function(){};
 
   async function fire(eventType){
     try{
@@ -573,7 +572,7 @@
     }catch(_){}
   }
 
-  // 1) Incrémente 1 fois par session (visite)
+  // 1) Incrémente 1 fois par session (visite) — pas d'affichage public
   if (!sessionStorage.getItem('v1')) {
     fire('update_stats').then(refreshStats);
     sessionStorage.setItem('v1', '1');
@@ -581,7 +580,7 @@
     refreshStats();
   }
 
-  // 2) Incrémente à chaque clic sur "Détails"
+  // 2) Incrémente à chaque clic sur "Détails" — pas d'affichage public
   document.addEventListener('click', (e)=>{
     const link = e.target.closest('a.link[data-id]');
     if (!link) return;
