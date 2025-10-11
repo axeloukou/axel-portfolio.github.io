@@ -220,10 +220,13 @@
       </section>
     </main>
 
+    <!-- footer avec compteurs visibles -->
     <footer>
-      <div>Axel Ange Yvan LOUKOU</div>
-      <!-- 👇 AJOUT : affichage visible du compteur -->
-      <div id="visitCount" style="margin-top:8px;color:var(--muted);font-size:12px"></div>
+      <div>
+        Axel Ange Yvan LOUKOU ·
+        <span id="visitsCount" title="Visites du site">—</span> visites ·
+        <span id="detailsCount" title="Ouvertures de “Détails”">—</span> ouvertures
+      </div>
     </footer>
   </div>
 
@@ -550,38 +553,52 @@
   <!-- ========= Analytics gratuit (CountAPI) : visites + clics ========= -->
   <script>
     (function(){
-      const NAMESPACE = "axel_portfolio_counter_v1";
+      const NS = "axel_portfolio_counter_v1";
+      const $ = (s)=>document.querySelector(s);
+      const fmt = (n)=> Number.isFinite(n) ? n.toLocaleString('fr-FR') : '—';
 
-      // 1) Visites (page view) — on incrémente puis on affiche la valeur
-      fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/visites_totales`)
-        .then(()=> fetch(`https://api.countapi.xyz/get/${NAMESPACE}/visites_totales`))
-        .then(r=>r.json())
-        .then(d=>{
-          const el=document.getElementById('visitCount');
-          if(el && d && typeof d.value==="number"){
-            el.textContent = `👁️ ${d.value.toLocaleString('fr-FR')} visites`;
-          }
-        })
-        .catch(()=>{ /* silencieux */ });
+      // Affiche les compteurs actuels (utile si hit échoue ou bloqué)
+      function refreshCounts(){
+        fetch(`https://api.countapi.xyz/get/${NS}/visites_totales`)
+          .then(r=>r.json()).then(j=>{ if($('#visitsCount')) $('#visitsCount').textContent = fmt(j.value); })
+          .catch(()=>{ if($('#visitsCount')) $('#visitsCount').textContent = '—'; });
 
-      // 2) Clics sur "Détails" (détection sans modifier ton code)
+        fetch(`https://api.countapi.xyz/get/${NS}/clics_details_total`)
+          .then(r=>r.json()).then(j=>{ if($('#detailsCount')) $('#detailsCount').textContent = fmt(j.value); })
+          .catch(()=>{ if($('#detailsCount')) $('#detailsCount').textContent = '—'; });
+      }
+
+      // +1 visite puis rafraîchit l’affichage
+      function bumpVisit(){
+        fetch(`https://api.countapi.xyz/hit/${NS}/visites_totales`)
+          .catch(()=>{})
+          .finally(refreshCounts);
+      }
+
+      // +1 total détails
+      function bumpDetailsTotal(){
+        fetch(`https://api.countapi.xyz/hit/${NS}/clics_details_total`).catch(()=>{}).finally(refreshCounts);
+      }
+
+      // +1 par projet
+      function bumpPerProject(title){
+        const key = 'open_project_' + encodeURIComponent(title || 'unknown');
+        fetch(`https://api.countapi.xyz/hit/${NS}/${key}`).catch(()=>{});
+      }
+
+      // branchement sur les liens "Détails"
       document.addEventListener('click', (e)=>{
         const link = e.target.closest('a.link[data-id]');
-        if (!link) return;
+        if(!link) return;
         const id = Number(link.getAttribute('data-id'));
         const p = (window.projects || [])[id];
-        const title = p && p.title ? p.title : 'unknown';
-        const key = 'open_project_' + encodeURIComponent(title);
-        fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${key}`).catch(()=>{});
+        bumpPerProject(p?.title);
+        bumpDetailsTotal();
       });
 
-      // 3) Clic sur "Me contacter"
-      const contactBtn = document.getElementById('contactBtn');
-      if (contactBtn){
-        contactBtn.addEventListener('click', ()=>{
-          fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/contact_open`).catch(()=>{});
-        });
-      }
+      // au chargement : afficher ce qui existe, puis incrémenter la visite et ré-afficher
+      refreshCounts();
+      bumpVisit();
     })();
   </script>
 </body>
