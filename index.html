@@ -222,6 +222,8 @@
 
     <footer>
       <div>Axel Ange Yvan LOUKOU</div>
+      <!-- 👇 AJOUT : affichage visible du compteur -->
+      <div id="visitCount" style="margin-top:8px;color:var(--muted);font-size:12px"></div>
     </footer>
   </div>
 
@@ -257,7 +259,7 @@
         stack: ["R"],
         github: null,
         demo: null,
-        pdf: "projet_reassurance_code.html",  // fichier HTML à la racine du dépôt
+        pdf: "projet_reassurance_code.html",
         img: null,
         images: [],
         company: "Projet universitaire — Master MBFA (Assurance & Réassurance)",
@@ -470,7 +472,6 @@
 
       if (p.pdf){
         const pdfSrc = encodeURI(p.pdf);
-        // ✅ Afficher l’alerte uniquement pour ce projet + quand l’URL passe par nbviewer
         const needsFallback =
           p.title.includes("Optimisation de portefeuille") && /nbviewer/.test(pdfSrc);
       
@@ -544,6 +545,44 @@
       entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target);} });
     },{threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  </script>
+
+  <!-- ========= Analytics gratuit (CountAPI) : visites + clics ========= -->
+  <script>
+    (function(){
+      const NAMESPACE = "axel_portfolio_counter_v1";
+
+      // 1) Visites (page view) — on incrémente puis on affiche la valeur
+      fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/visites_totales`)
+        .then(()=> fetch(`https://api.countapi.xyz/get/${NAMESPACE}/visites_totales`))
+        .then(r=>r.json())
+        .then(d=>{
+          const el=document.getElementById('visitCount');
+          if(el && d && typeof d.value==="number"){
+            el.textContent = `👁️ ${d.value.toLocaleString('fr-FR')} visites`;
+          }
+        })
+        .catch(()=>{ /* silencieux */ });
+
+      // 2) Clics sur "Détails" (détection sans modifier ton code)
+      document.addEventListener('click', (e)=>{
+        const link = e.target.closest('a.link[data-id]');
+        if (!link) return;
+        const id = Number(link.getAttribute('data-id'));
+        const p = (window.projects || [])[id];
+        const title = p && p.title ? p.title : 'unknown';
+        const key = 'open_project_' + encodeURIComponent(title);
+        fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/${key}`).catch(()=>{});
+      });
+
+      // 3) Clic sur "Me contacter"
+      const contactBtn = document.getElementById('contactBtn');
+      if (contactBtn){
+        contactBtn.addEventListener('click', ()=>{
+          fetch(`https://api.countapi.xyz/hit/${NAMESPACE}/contact_open`).catch(()=>{});
+        });
+      }
+    })();
   </script>
 </body>
 </html>
