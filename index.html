@@ -221,7 +221,8 @@
     </main>
 
     <footer>
-      <div>Axel Ange Yvan LOUKOU - Je vous remercie pour votre visite. À bientôt, je l'espère !</div>
+      <div> Je vous remercie pour votre visite. À bientôt, je l'espère ! - Axel LOUKOU
+      </div>
     </footer>
   </div>
 
@@ -252,8 +253,8 @@
       },
       {
         title: "Modélisation de la tarification auto et de l’impact de la réassurance",
-        summary: "Calcul de la prime pure, du ratio Sinistre/Prime, revalorisation des montants, GLM fréquence/sévérité, tarifs par profil + Burning-Cost",
-        tags: ["Assurance","Risque","GLM"],
+        summary: "Calcul de la prime pure, du ratio Sinistre/Prime, revalorisation des montants, GLM fréquence/sévérité, prediction tarifs par profil + Burning-Cost",
+        tags: ["Assurance","Risque"],
         stack: ["R"],
         github: null,
         demo: null,
@@ -291,7 +292,7 @@
         title: "Modélisation Solvabilité II — Best Estimate, SCR et VaR",
         summary: "Construction d’un modèle Excel complet conforme à la directive Solvabilité II : calcul du Best Estimate, du SCR et de la Value at Risk (VaR). Étude de la diversification des risques et de la sensibilité au taux d’actualisation.",
         tags: ["Solvabilité II","Actuariat"],
-        stack: ["Excel"],
+        stack: ["Excel","VBA"],
         github: null,
         demo: null,
         pdf: null,
@@ -544,50 +545,5 @@
     },{threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   </script>
-
-  <!-- ========= Compteur GitHub Actions : visites + ouvertures (invisible) ========= -->
-  <script>
-(function(){
-  const WORKER_URL = "https://shrill-rice-277f.axeloukou.workers.dev/";
-  const RAW_URL = "https://raw.githubusercontent.com/axeloukou/axel-portfolio.github.io/main/data/stats.json";
-  const footer = document.getElementById('visitCount'); // élément absent = pas d'affichage
-
-  // Ne télécharge PAS les stats si aucun élément d'affichage
-  const refreshStats = footer ? async function(){
-    try{
-      const res = await fetch(RAW_URL, { cache: 'no-store' });
-      const stats = await res.json();
-      const fmt = n => (typeof n === "number" ? n.toLocaleString('fr-FR') : "0");
-      footer.textContent = `👁️ ${fmt(stats.visites)} visites · 📄 ${fmt(stats.details)} ouvertures`;
-    }catch(_){}
-  } : function(){};
-
-  async function fire(eventType){
-    try{
-      await fetch(WORKER_URL, {
-        method:'POST',
-        headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ event: eventType })
-      });
-    }catch(_){}
-  }
-
-  // 1) Incrémente 1 fois par session (visite) — pas d'affichage public
-  if (!sessionStorage.getItem('v1')) {
-    fire('update_stats').then(refreshStats);
-    sessionStorage.setItem('v1', '1');
-  } else {
-    refreshStats();
-  }
-
-  // 2) Incrémente à chaque clic sur "Détails" — pas d'affichage public
-  document.addEventListener('click', (e)=>{
-    const link = e.target.closest('a.link[data-id]');
-    if (!link) return;
-    fire('update_details').then(refreshStats);
-  });
-})();
-</script>
-
 </body>
 </html>
