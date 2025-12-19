@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projets — Axel LOUKOU | Data Analyst</title>
+  <meta name="description" content="Découvrez mes projets en Data Analysis, Power BI, Python, actuariat et gestion des risques.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0b63b7;
+      --primary-dark: #094a8f;
+      --primary-light: #e8f2fb;
+      --bg: #f5f8fb;
+      --card: #ffffff;
+      --text: #111;
+      --muted: #6b7280;
+      --shadow: rgba(11, 99, 183, 0.08);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #eef6ff 0%, var(--bg) 100%);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ========= NAVIGATION ========= */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+      padding: 0 40px;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .nav-links a.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* ========= PAGE HEADER ========= */
+    .page-header {
+      padding: 140px 40px 80px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23dots)"/></svg>');
+    }
+
+    .page-header h1 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-header p {
+      font-size: 20px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ========= CONTENT SECTION ========= */
+    .content-section {
+      padding: 80px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ========= FILTRES & RECHERCHE ========= */
+    .toolbar {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      align-items: center;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: 2px solid rgba(11, 99, 183, 0.2);
+      background: white;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 15px var(--shadow);
+    }
+
+    /* Filtres cachés + bouton toggle */
+    .filter-btn.is-hidden {
+      display: none;
+    }
+
+    .filter-btn.toggle-btn {
+      border-style: dashed;
+      font-weight: 800;
+    }
+
+    .filter-btn.toggle-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 10px;
+      border: 2px solid rgba(11, 99, 183, 0.15);
+      background: white;
+      font-size: 15px;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* ========= GRILLE PROJETS ========= */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(11, 99, 183, 0.15);
+    }
+
+    .project-thumbnail {
+      height: 180px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: white;
+      font-weight: 800;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .project-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 15px;
+      flex: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .tag {
+      padding: 6px 12px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .project-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .project-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      transition: opacity 0.3s;
+    }
+
+    .project-link:hover {
+      opacity: 0.7;
+    }
+
+    /* ========= MODAL ========= */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      width: min(900px, 95%);
+      max-height: 90vh;
+      overflow: auto;
+      padding: 40px;
+      position: relative;
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 30px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      color: var(--text);
+      background: var(--primary-light);
+    }
+
+    .modal-image {
+      width: 100%;
+      border-radius: 10px;
+      margin: 10px 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* ========= FOOTER ========= */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 14px;
+      background: white;
+      margin-top: 60px;
+    }
+
+    /* ========= RESPONSIVE ========= */
+    @media (max-width: 1024px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .page-header h1 {
+        font-size: 32px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .content-section {
+        padding: 60px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">AL</div>
+        <span>Portfolio - Axel</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="projets.html" class="active">Projets</a></li>
+        <li><a href="experiences.html">Expériences</a></li>
+        <li><a href="certifications.html">Certifications</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>📊 Mes Projets</h1>
+    <p>Une sélection de mes réalisations en Data Analysis, Business Intelligence et modélisation</p>
+  </div>
+
+  <!-- Content Section -->
+  <section class="content-section">
+    <!-- Filtres et Recherche -->
+    <div class="toolbar">
+      <div class="filters" id="filters"></div>
+      <div class="search-box">
+        <input type="search" id="searchInput" placeholder="🔍 Rechercher un projet...">
+      </div>
+    </div>
+
+    <!-- Grille des Projets -->
+    <div class="projects-grid" id="projectsGrid"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Axel LOUKOU - Contrôleur de gestion & Data Analyst | Tous droits réservés</p>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    // Données des projets
+    const projects = [
+      {
+        title: "Reporting KPIs - Power BI",
+        cardSummary: "Automatisation et fiabilisation d’un reporting de pilotage des performances commerciales IARD & Vie sous Power BI à destination de la Direction du Réseau Agents Généraux et des équipes métier.",
+        detailedDescription: "🧩 <strong>Contexte :</strong><br>Dans le cadre de mon expérience chez Generali France, j’ai mis en place et automatisé un <strong>reporting stratégique</strong> destiné au <strong>pilotage de la performance du Réseau des Agents Généraux</strong>, sur les périmètres IARD et Vie. Les données présentées ont été anonymisées pour des raisons de confidentialité.<br><br>🎯 <strong>Objectifs :</strong><ul><li>Centraliser les indicateurs clés de performance (KPIs) dans un tableau de bord unique</li><li>Faciliter le pilotage commercial et managérial</li><li>Améliorer la lisibilité des performances et le suivi des écarts aux objectifs.</li></ul> <br>📊 <strong>Données & indicateurs suivis :</strong><ul><li>Taux de couverture</li><li>Taux d'activation d'espaces clients</li><li>Taux de Transformation des leads</li><li>Taux de Multi-équipement</li><li>Durabilité</li><li>Taux d'utilisation GRC</li><li>Plan de rappel</li><li>Indicateurs d’activité et portefeuille IARD et Vie</li><li>Suivi des commissions et évolutions pluriannuelles.</li></ul><br>🛠️ <strong>Méthodologie & outils :</strong><ul><li><strong>Power BI :</strong> conception du tableau de bord interactif</li><li><strong>Power Query :</strong> nettoyage, transformation et consolidation des données</li><li><strong>DAX :</strong> calcul des indicateurs, ratios, écarts vs cibles</li><li><strong>Snowflake & BO :</strong> source de données</li><li><strong>SharePoint :</strong> centralisation et diffusion des reportings.</li></ul><br>",
+        tags: ["DAX", "SharePoint", "Snowflake", "Excel","Assurance"],
+        stack: ["Power BI", "Power Query", "BO"],
+        company: "Generali France",
+        impact: "un tableau de bord unique, prêt à l’usage, mis à jour automatiquement, permettant un pilotage plus rapide et plus fiable.",
+        pdf: "reporting-impulso.pdf"
+      },
+      {
+        title: "Gestion de portefeuille sous contrainte de risque — CAC 40",
+        cardSummary: "Optimisation d’un portefeuille d’actions du CAC 40 sous contrainte de risque, via une approche CVaR et une allocation optimale rendement/risque",
+        detailedDescription: "🧩 <strong>Contexte :</strong><br>Projet universitaire (Master 2) visant à construire un <strong>portefeuille d’actions du CAC40</strong> et à l’optimiser selon une approche <strong>rendement / risque</strong>, avec une logique proche de la gestion d’actifs : mesurer le risque, comparer des allocations et sélectionner la meilleure combinaison possible.<br><br>🎯 <strong>Objectifs :</strong><ul><li>Calculer les rendements et la volatilité des actifs (et du portefeuille)</li><li>Modéliser le comportement des rendements (hypothèse de loi normale multivariée)</li><li>Optimiser l’allocation sous contrainte de risque via la <strong>CVaR (Conditional Value at Risk)</strong></li><li>Visualiser et interpréter les résultats pour justifier le portefeuille retenu</li></ul><br>📊 <strong>Données utilisées :</strong><ul><li>Séries de prix / rendements d’actions du CAC40 (période d’observation)</li><li>Rendements journaliers (ou périodiques) et statistiques associées (moyennes, volatilités)</li><li>Matrice de covariance / corrélation pour modéliser la dépendance entre actifs</li><li>Paramètres de risque (niveau de confiance) pour le calcul de la CVaR</li></ul><br>🛠️ <strong>Méthodologie & outils :</strong><ul><li><strong>Préparation :</strong> nettoyage, calcul des rendements, statistiques descriptives</li><li><strong>Mesure du risque :</strong> estimation de la covariance et modélisation via <strong>normale multivariée</strong></li><li><strong>Optimisation :</strong> résolution numérique avec <strong>SciPy</strong> pour minimiser la <strong>CVaR</strong> sous contraintes (poids, budget, etc.)</li><li><strong>Visualisation :</strong> graphiques d’allocation et comparaison avant/après optimisation (<strong>Matplotlib / Seaborn</strong>)</li></ul><br>",
+        tags: ["Finance", "Python"],
+        stack: ["Gestion des risques"],
+        company: "Projet universitaire - Master 2",
+        impact: "Construction d’un portefeuille optimal en termes de couple rendement/risque, avec un risque extrême mieux contrôlé grâce à la CVaR (approche stress / worst-case).",
+        github: "https://github.com/axeloukou/axel-notebook/blob/main/CVaR_optimisation.ipynb"
+      },
+      {
+        title: "Modélisation Solvabilité 2 — BE, SCR et VaR",
+        cardSummary: "Construction d’un modèle Excel Solvabilité II pour le calcul du Best Estimate, du SCR et de la VaR, avec prise en compte de la diversification des risques.",
+        detailedDescription: "🧩 <strong>Contexte :</strong><br>Projet universitaire (Master 2 Actuariat) : construction d’un <strong>modèle Excel complet</strong> conforme à la logique Solvabilité II pour estimer les <strong>provisions techniques (Best Estimate)</strong>, calculer le <strong>SCR</strong> via la <strong>matrice de corrélation</strong>, et simuler la <strong>VaR 99,5%</strong>. Le modèle sert aussi à tester la <strong>sensibilité au taux d’actualisation</strong> et analyser la <strong>duration</strong> du portefeuille.<br><br>🎯 <strong>Objectifs :</strong><ul><li>Calculer le <strong>Best Estimate</strong> à partir des flux projetés et actualisés (avec scénarios de taux)</li><li>Calculer le <strong>SCR</strong> par module de risque et mesurer l’effet <strong>diversification vs corrélation parfaite</strong></li><li>Estimer une <strong>VaR</strong> au niveau réglementaire (≈ 99,5%) via une distribution simulée</li><li>Produire un outil <strong>paramétrable</strong> (taux, hypothèses, tables, charges…) et exploitable pour des analyses “what-if”</li></ul><br>📊 <strong>Données utilisées :</strong><ul><li><strong>Flux futurs</strong> projetés (rentes / prestations) + <strong>hypothèses</strong> (charges, frais, paramètres techniques)</li><li><strong>Tables de mortalité</strong> (ex : TGH/TGF) + structure portefeuille (ex : mix homme/femme)</li><li><strong>Courbe de taux / RFR spot</strong> utilisée pour l’actualisation</li><li><strong>Modules SCR</strong> et <strong>matrice de corrélation</strong> pour l’agrégation du capital (diversification)</li><li>Séries simulées/observations pour construire une <strong>distribution</strong> et lire la <strong>VaR</strong> (quantile)</li></ul><br>🛠️ <strong>Méthodologie & outils :</strong><ul><li><strong>Best Estimate (BE)</strong> : projection des flux, actualisation, calcul BE central + BE ajusté (sensibilité au taux), mesure de la <strong>duration</strong></li><li><strong>SCR</strong> : calcul par modules (marché, défaut, vie, santé, non-vie selon le modèle), puis <strong>agrégation</strong> via matrice de corrélation (comparaison “après diversification / sans diversification / corrélation parfaite”)</li><li><strong>VaR</strong> : construction d’une distribution (fréquences cumulées / histogramme) et extraction du quantile <strong>99,5%</strong> (ou 99,96% selon l’exemple)</li><li><strong>Outil</strong> : Excel (modèle multi-feuilles, formules, tableaux de synthèse, graphiques)</li></ul><br>",
+        tags: ["Solvabilité 2", "Actuariat", "Excel","Gestion des risques"],
+        stack: ["VBA"],
+        company: "Projet universitaire — Master 2 (Actuariat)",
+        impact: "Compréhension approfondie de la directive Solvabilité II et modélisation des indicateurs clés de solvabilité (BE, SCR, VaR) dans un outil automatisé et paramétrable.",
+        images: ["image3.png", "image4.png", "image5.png", "image6.png"]
+      },
+      {
+        title: "Tarification auto et impact de la réassurance",
+        cardSummary: "Calcul de la prime pure, ratio S/P, GLM fréquence/sévérité et Burning-Cost.",
+        detailedDescription: "🧩 <strong>Contexte :</strong><br>Projet universitaire réalisé dans le cadre du Master 2, visant à reproduire une démarche actuarielle complète de <strong>tarification automobile</strong> et à analyser l’impact d’un programme de <strong>réassurance</strong> sur le risque et la rentabilité du portefeuille.<br><br>🎯 <strong>Objectifs :</strong><ul><li>Calculer la <strong>prime pure</strong> et analyser la performance technique (ratio S/P)</li><li>Modéliser la <strong>fréquence</strong> et la <strong>sévérité</strong> des sinistres via des modèles statistiques</li><li>Prédire les <strong>tarifs par profil de risque</strong></li><li>Évaluer l’impact de la <strong>réassurance</strong> sur la volatilité et le coût du risque</li></ul><br>📊 <strong>Données utilisées :</strong><ul><li>Base automobile consolidée : <strong>16&nbsp;181</strong> observations</li><li><strong>13</strong> variables explicatives (profil assuré, exposition, sinistres, montants)</li><li>Revalorisation des montants historiques et statistiques <strong>“as-if” 2025</strong></li><li>Séparation fréquence / sévérité pour une modélisation actuarielle standard</li></ul><br>🛠️ <strong>Méthodologie & outils :</strong><ul><li><strong>Analyse actuarielle :</strong> calcul de la prime pure (2 méthodes) et analyse du ratio <strong>Sinistre/Prime</strong></li><li><strong>GLM :</strong> Poisson pour la fréquence (offset <em>log(Exposure)</em>) et Gamma pour la sévérité (lien log)</li><li><strong>Tarification :</strong> prédiction de tarifs par profil de risque</li><li><strong>Réassurance :</strong> traité <strong>XL (Excess of Loss)</strong> et calcul du <strong>Burning-Cost</strong></li><li><strong>Outil :</strong> <strong>R</strong> (statistiques, GLM)</li></ul><br>",
+        tags: ["Assurance", "Risque", "R"],
+        stack: ["GLM"],
+        company: "Projet universitaire — Master 2 (Actuariat)",
+        impact: "Illustration quantitative de l'effet stabilisateur de la réassurance sur le risque et du compromis entre coût et volatilité du portefeuille.",
+        pdf: "projet_reassurance_code.html"
+      },
+      {
+        title: "Analyse de survie",
+        cardSummary: "Analyse de survie pour étudier le temps avant événement, comparer des populations et modéliser les facteurs de risque à l’aide des méthodes Kaplan–Meier et du modèle de Cox.",
+        detailedDescription: "🧩 <strong>Contexte :</strong><br>Projet universitaire (Master 2) visant à présenter une démarche complète d’<strong>analyse de survie sous R</strong> avec le package <strong>survival</strong> (et <strong>survminer</strong>), incluant la gestion de la <strong>censure</strong>, la visualisation et la modélisation semi-paramétrique sur le dataset <strong>lung</strong>.<br><br>🎯 <strong>Objectifs :</strong><ul><li>Gérer des <strong>données censurées</strong> et construire l’objet <code>Surv(time, status)</code></li><li>Estimer et comparer des courbes <strong>Kaplan–Meier</strong> (par groupe) et réaliser un <strong>test log-rank</strong></li><li>Ajuster un <strong>modèle de Cox</strong> et interpréter les <strong>hazard ratios</strong></li><li>Vérifier l’hypothèse des <strong>risques proportionnels</strong> et produire un rendu clair (risk table / forest plot)</li></ul><br>📊 <strong>Données utilisées :</strong><ul><li>Dataset <strong>lung</strong> (package survival)</li><li><strong>time</strong> : temps de survie (jours)</li><li><strong>status</strong> recodé en <strong>0 = censuré</strong> / <strong>1 = décès</strong></li><li>Variables explicatives : <strong>age</strong>, <strong>sex</strong> (+ scores cliniques disponibles)</li></ul><br>🛠️ <strong>Méthodologie & outils :</strong><ul><li><strong>Préparation / censure :</strong> recodage de <code>status</code> puis création de <code>Surv(time, status)</code></li><li><strong>Kaplan–Meier :</strong> <code>survfit()</code> + visualisation <code>ggsurvplot()</code> (IC, p-value, table des sujets à risque, médiane)</li><li><strong>Comparaison :</strong> <code>survdiff()</code> (log-rank) pour tester la différence entre groupes</li><li><strong>Modèle de Cox :</strong> <code>coxph(Surv(time,status) ~ age + sex)</code> + interprétation des HR</li><li><strong>Validation :</strong> <code>cox.zph()</code> (risques proportionnels) + forest plot via <code>ggforest()</code></li><li><strong>Outils :</strong> <strong>R</strong> (survival, survminer)</li></ul><br>",
+        tags: ["R", "Statistiques"],
+        stack: ["Survival Analysis"],
+        company: "Projet universitaire — Master 2",
+        impact: "Mise en place d'un processus complet et reproductible d'analyse de survie avec visualisations et vérification des modèles de Cox.",
+        pdf: "s_survival.pdf"
+      },
+      {
+        title: "Scoring de crédit — Régression logistique et interprétation du risque",
+        cardSummary: "Scoring de crédit par régression logistique avec analyse des performances et interprétation des variables.",
+        detailedDescription: "🧩 <strong>Contexte :</strong><br>Projet universitaire visant à construire un <strong>modèle de scoring de crédit</strong> pour estimer le <strong>risque de défaut</strong> à partir de variables socio-économiques et contractuelles, en utilisant une <strong>régression logistique (Logit)</strong> sous R.<br><br>🎯 <strong>Objectifs :</strong><ul><li>Préparer les données (variables catégorielles → facteurs + dummies)</li><li>Entraîner un modèle Logit et produire des <strong>probabilités de défaut</strong></li><li>Évaluer la performance (train/test, accuracy, matrices de confusion)</li><li>Interpréter le modèle via <strong>effets marginaux</strong> et <strong>odds ratios</strong></li></ul><br>📊 <strong>Données utilisées :</strong><ul><li>Dataset <strong>German Credit</strong> : <strong>1 000</strong> observations et <strong>21</strong> variables (montant, durée, historique de crédit, épargne, emploi…)</li><li>Variable cible : <code>credit_risk</code></li><li>Découpage <strong>70% train / 30% test</strong></li></ul><br>🛠️ <strong>Méthodologie & outils :</strong><ul><li><strong>R</strong> (packages : <code>dplyr</code>, <code>ggplot2</code>, <code>MASS</code>, <code>margins</code>)</li><li>Pré-traitement : facteurs + création de dummies via <code>model.matrix()</code></li><li>Modélisation : <code>glm(..., family = binomial())</code></li><li>Évaluation : prédictions + seuil 0,5, accuracy (≈ $0.72$ train ; ≈ $0.717$ test) + matrices de confusion</li><li>Interprétation : effets marginaux (<code>margins</code>) et odds ratios (<code>exp(coef)</code>) + visualisation </li></ul><br>",
+        tags: ["R", "Machine Learning"],
+        stack: ["Régression Logistique"],
+        company: "Projet universitaire — Master 1",
+        impact: "Pipeline complet et reproductible de scoring (préparation → modèle → évaluation → interprétation) et identification des principaux drivers du risque via odds ratios et effets marginaux pour une aide à la décision en contexte crédit",
+        pdf: "scoring-credit.pdf"
+      },  
+      {
+        title: "Valorisation d’options — Arbres binomiaux & trinominiaux, convergence vers Black-Scholes",
+        cardSummary: "Implémentation sous Excel/VBA des modèles d’arbres binomiaux et trinominaux pour la valorisation d’options, avec étude de la convergence vers Black–Scholes.",
+        detailedDescription: "🧩 <strong>Contexte :</strong><br>Projet universitaire réalisé en Master 1 visant à implémenter sous <strong>Excel/VBA</strong> des modèles discrets de valorisation d’options financières, à savoir les <strong>arbres binomiaux</strong> (Cox-Ross-Rubinstein) et <strong>trinominaux</strong>, et à analyser leur convergence vers le modèle continu de <strong>Black–Scholes</strong>.<br><br>🎯 <strong>Objectifs :</strong><ul><li>Construire un outil complet de valorisation d’options européennes et américaines</li><li>Comparer les résultats des approches binomiale et trinominiale</li><li>Étudier la convergence des modèles discrets vers Black–Scholes lorsque le nombre de pas augmente</li><li>Automatiser les calculs et les visualisations via VBA</li></ul><br>📊 <strong>Données utilisées :</strong><ul><li>Paramètres de marché : prix du sous-jacent, strike, maturité, taux sans risque et volatilité</li><li>Nombre de pas de discrétisation des arbres</li><li>Prix théorique issu du modèle de Black–Scholes pour la comparaison</li></ul><br>🛠️ <strong>Méthodologie & outils :</strong><ul><li><strong>Arbre binomial (CRR)</strong> : génération des nœuds, calcul des probabilités risque-neutre et valorisation backward</li><li><strong>Arbre trinomial</strong> : extension à trois branches (up / middle / down)</li><li><strong>Analyse de convergence</strong> : calculs pour différents nombres de pas et représentation graphique</li><li><strong>Excel & VBA</strong> : automatisation de la génération des arbres, des calculs et des graphiques</li></ul><br>",
+        tags: ["Finance", "Excel"],
+        stack: ["VBA"],
+        company: "Projet universitaire — Master 1",
+        impact: "Vérification numérique de la convergence des modèles binomiaux et trinominaux vers Black–Scholes ; compréhension approfondie des modèles d'options discrètes et des mathématiques financières.",
+        images: ["image1.png", "image2.png"]
+      },
+      {
+        title: "Analyse et réglementation des produits bancaires",
+        cardSummary: "Panorama structuré des produits bancaires : épargne, crédits et assurances.",
+        detailedDescription: "🧩 <strong>Contexte :</strong><br>Projet universitaire (Master 1 MBFA) réalisé dans le cadre d’un module de <strong>réglementation bancaire</strong>, visant à structurer et vulgariser le fonctionnement et le cadre réglementaire des principaux <strong>produits bancaires</strong> (épargne, crédit, assurance).<br><br>🎯 <strong>Objectifs :</strong><ul><li>Classer et présenter les produits par grandes familles : <strong>épargne court/moyen/long terme</strong>, <strong>crédit</strong> et <strong>assurance</strong></li><li>Décrire pour chaque produit : <strong>caractéristiques</strong>, <strong>avantages</strong>, <strong>inconvénients</strong> et <strong>fiscalité</strong> (approche « fiche produit »)</li><li>Construire une base claire pour <strong>comparer</strong> et <strong>orienter</strong> vers une solution selon l’objectif (liquidité, rendement, horizon, protection)</li></ul><br>📊 <strong>Données utilisées :</strong><ul><li>Support de cours et <strong>synthèse documentaire</strong> sur la réglementation et les caractéristiques produits</li><li>Périmètre : épargne (Livret A/LDDS/LEP, CAT, PEL/CEL, PEA/PEA-PME…), placements long terme (assurance-vie, PER, SCPI, actions/obligations, fonds…), crédits (amortissable, in fine, relais, conso, PTZ…), assurances (emprunteur, MRH, RC, GAV, santé…)</li></ul><br>🛠️ <strong>Méthodologie & outils :</strong><ul><li>Approche « <strong>catalogue produit</strong> » : une fiche standard par produit (fonctionnement, conditions, fiscalité, points de vigilance)</li><li>Organisation par <strong>usage</strong> : horizon d’investissement, liquidité, risque, objectif client</li><li>Outils : <strong>Suite Office</strong> (structuration, mise en forme, synthèse pédagogique)</li></ul><br>",
+        tags: ["Finance", "Banque", "Assurance", "PowerPoint"],
+        stack: ["Synthèse documentaire"],
+        company: "Projet universitaire — Master 1",
+        impact: "Vision structurée et opérationnelle des produits bancaires et assurantiels, renforcement de la compréhension des logiques de réglementation, fiscalité et contraintes produit (prérequis finance / banque / assurance)",
+        pdf: "Produits_bancaires.pdf"
+      },
+      {
+        title: "Eco Connect — Application RSE & pilotage de l’engagement collaborateurs",
+        cardSummary: "Conception d’une application mobile RSE intégrant gamification, KPI d’engagement et suivi de la participation.",
+        detailedDescription: "🧩 <strong>Contexte :</strong><br>Dans le cadre d’un <strong>projet universitaire (Concours RSE)</strong>, nous avons conçu <strong>EcoConnect</strong>, une application mobile destinée à sensibiliser et impliquer les collaborateurs (cas d’usage : <strong>Carsat MP</strong>) via une approche <strong>ludique</strong> et engageante (gamification). L’objectif est d’activer des mécaniques inspirées d’applications à forte rétention (progression, défis, récompenses, social).<br><br>🎯 <strong>Objectifs :</strong><ul><li>Inciter les collaborateurs à <strong>tester</strong> l’application et à adopter des pratiques responsables</li><li><strong>Maintenir l’engagement</strong> dans le temps grâce à des missions quotidiennes et des défis long terme</li><li>Créer une dynamique collective via <strong>classements</strong>, <strong>interaction sociale</strong> et <strong>récompenses</strong></li></ul><br>📊 <strong>Données / KPI utilisés :</strong><ul><li>Définition d’indicateurs de suivi : <strong>adoption</strong>, <strong>participation</strong>, <strong>engagement</strong>, <strong>communication</strong>, <strong>reconnaissance / récompenses</strong></li><li>Analyse de benchmarks d’applications gamifiées pour structurer les parcours utilisateurs</li></ul><br>🛠️ <strong>Méthodologie & outils :</strong><ul><li><strong>Gamification :</strong> conception des mécaniques (missions, points, badges, classements, communauté)</li><li><strong>Conception produit :</strong> définition des parcours utilisateurs et des règles fonctionnelles</li><li><strong>Prototype / maquettes :</strong> proposition d’écrans clés et d’une interface utilisateur</li><li><strong>Plan de déploiement :</strong> conception → développement → lancement → suivi et amélioration continue</li></ul><br>",
+        tags: ["RSE", "Communication"],
+        stack: ["Application mobile"],
+        company: "Concours RSE",
+        impact: "Renforcer la culture RSE en interne via une approche engageante et mesurable. Positionner l’organisation comme plus attractive (image, engagement, innovation), avec une logique “gagnant-gagnant” pour l’entreprise et les collaborateurs.",
+        pdf: "RSE-projet.pdf"
+      }
+    ];
+
+    // Fonction pour générer les initiales
+    function getInitials(title) {
+      return title.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    }
+
+    // Fonction pour rendre les cartes de projets
+    function renderProjects(filteredProjects = projects) {
+      const grid = document.getElementById('projectsGrid');
+      grid.innerHTML = '';
+      
+      if (filteredProjects.length === 0) {
+        grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px;">Aucun projet trouvé pour ces critères</p>';
+        return;
+      }
+
+      filteredProjects.forEach((project, index) => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.onclick = () => openModal(projects.indexOf(project));
+        
+        const allTags = [...(project.stack || []), ...(project.tags || [])].slice(0, 5);
+        
+        // Utilise cardSummary si disponible, sinon summary
+        const displaySummary = project.cardSummary || project.summary;
+        
+        card.innerHTML = `
+          <div class="project-thumbnail">
+            ${project.img ? `<img src="${project.img}" alt="${project.title}">` : getInitials(project.title)}
+          </div>
+          <div class="project-body">
+            <h3 class="project-title">${project.title}</h3>
+            <div class="project-meta">${project.company || ''}</div>
+            <p class="project-desc">${displaySummary}</p>
+            <div class="project-tags">
+              ${allTags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+            <div class="project-actions">
+              ${project.github ? `<a href="${project.github}" class="project-link" target="_blank" onclick="event.stopPropagation()">GitHub →</a>` : ''}
+              ${project.demo ? `<a href="${project.demo}" class="project-link" target="_blank" onclick="event.stopPropagation()">Démo →</a>` : ''}
+              <a href="#" class="project-link" onclick="event.preventDefault()">Détails →</a>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Fonction pour générer les filtres
+    function generateFilters() {
+      const allTags = new Set();
+      projects.forEach(p => {
+        [...(p.stack || []), ...(p.tags || [])].forEach(tag => allTags.add(tag));
+      });
+
+      const filterContainer = document.getElementById('filters');
+      filterContainer.innerHTML = '';
+
+      // Tags visibles par défaut
+      const defaultVisible = new Set([
+        "Tous",
+        "Power BI",
+        "Excel",
+        "Python",
+        "SQL",
+        "DAX",
+        "Power Query",
+        "Snowflake",
+        "Finance",
+        "Assurance",
+        "Banque",
+        "Machine Learning",
+        "R",
+        "VBA",
+        "BO",
+        "Gestion des risques"
+      ]);
+
+      // Construction de la liste finale
+      const tags = ["Tous", ...Array.from(allTags).sort()];
+
+      let hasExtras = false;
+      let extrasCount = 0;
+
+      tags.forEach((tag, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn' + (index === 0 ? ' active' : '');
+        btn.textContent = tag;
+        btn.onclick = () => filterProjects(tag, btn);
+
+        // Cacher les tags non prioritaires
+        if (!defaultVisible.has(tag) && tag !== "Tous") {
+          btn.classList.add('extra-filter', 'is-hidden');
+          hasExtras = true;
+          extrasCount++;
+        }
+
+        filterContainer.appendChild(btn);
+      });
+
+      // Bouton +X / −
+      if (hasExtras) {
+        const toggle = document.createElement('button');
+        toggle.className = 'filter-btn toggle-btn';
+        toggle.textContent = `+${extrasCount}`;
+
+        toggle.onclick = () => {
+          const extras = document.querySelectorAll('.extra-filter');
+          const isHidden = extras.length > 0 && extras[0].classList.contains('is-hidden');
+
+          extras.forEach(b => b.classList.toggle('is-hidden'));
+          toggle.textContent = isHidden ? '−' : `+${extrasCount}`;
+        };
+
+        filterContainer.appendChild(toggle);
+      }
+    }
+
+    // Fonction pour filtrer les projets
+    function filterProjects(tag, button) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      applyFilters(tag, searchTerm);
+    }
+
+    // Fonction pour appliquer les filtres
+    function applyFilters(tag = null, searchTerm = '') {
+      const activeTag = tag || document.querySelector('.filter-btn.active')?.textContent || 'Tous';
+      const search = searchTerm || document.getElementById('searchInput').value.toLowerCase();
+      
+      const filtered = projects.filter(project => {
+        const matchesTag = activeTag === 'Tous' || 
+          [...(project.stack || []), ...(project.tags || [])].includes(activeTag);
+        
+        const searchableText = [
+          project.title,
+          project.cardSummary || project.summary || '',
+          project.company,
+          ...(project.stack || []),
+          ...(project.tags || [])
+        ].join(' ').toLowerCase();
+        
+        const matchesSearch = !search || searchableText.includes(search);
+        
+        return matchesTag && matchesSearch;
+      });
+      
+      renderProjects(filtered);
+    }
+
+    // Fonction pour ouvrir la modal
+    function openModal(projectIndex) {
+      const project = projects[projectIndex];
+      const modal = document.getElementById('modal');
+      const modalBody = document.getElementById('modalBody');
+      
+      // Utilise detailedDescription si disponible, sinon summary
+      const displayDescription = project.detailedDescription || project.summary;
+      
+      let content = `
+        <h2 style="margin-top: 0; color: var(--primary);">${project.title}</h2>
+        <p style="color: var(--muted); margin-bottom: 20px; font-size: 14px;">${project.company || ''}</p>
+        <p style="line-height: 1.8; margin-bottom: 20px;">${displayDescription}</p>
+      `;
+      
+      if (project.impact) {
+        content += `<p style="margin-bottom: 20px; background: var(--primary-light); padding: 15px; border-radius: 10px;"><strong>💡 Impact :</strong> ${project.impact}</p>`;
+      }
+      
+      if (project.highlights && project.highlights.length > 0) {
+        content += `
+          <div style="margin-bottom: 20px;">
+            <h3 style="color: var(--primary); margin-bottom: 15px; font-size: 20px;">Points clés :</h3>
+            <ul style="line-height: 1.8; color: var(--muted); padding-left: 25px;">
+              ${project.highlights.map(h => `<li style="margin-bottom: 8px;">${h}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+      
+      if (project.images && project.images.length > 0) {
+        content += `<div style="margin-top: 30px;"><h3 style="color: var(--primary); margin-bottom: 15px;">Captures d'écran :</h3>`;
+        project.images.forEach(img => {
+          content += `<img src="${img}" alt="Capture du projet" class="modal-image">`;
+        });
+        content += `</div>`;
+      }
+      
+      const links = [];
+      if (project.pdf) {
+        links.push(`<a href="${project.pdf}" target="_blank" style="display: inline-block; padding: 12px 24px; background: var(--primary); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">📄 Voir le document</a>`);
+      }
+      if (project.github) {
+        links.push(`<a href="${project.github}" target="_blank" style="display: inline-block; padding: 12px 24px; background: var(--primary-dark); color: white; text-decoration: none; border-radius: 10px; font-weight: 600; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">💻 Voir sur GitHub</a>`);
+      }
+      
+      if (links.length > 0) {
+        content += `<div style="margin-top: 30px; display: flex; gap: 15px; flex-wrap: wrap;">${links.join('')}</div>`;
+      }
+      
+      modalBody.innerHTML = content;
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Fonction pour fermer la modal
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    // Fermer la modal en cliquant à l'extérieur
+    document.getElementById('modal').onclick = function(event) {
+      if (event.target.id === 'modal') {
+        closeModal();
+      }
+    };
+
+    // Fermer la modal avec Escape
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeModal();
+      }
+    });
+
+    // Fonction pour le menu mobile
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      navLinks.classList.toggle('active');
+    }
+
+    // Fermer le menu en cliquant sur un lien
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navLinks').classList.remove('active');
+      });
+    });
+
+    // Recherche en temps réel
+    document.getElementById('searchInput').addEventListener('input', function() {
+      applyFilters();
+    });
+
+    // Initialisation
+    generateFilters();
+    renderProjects();
+  </script>
+</body>
+</html>

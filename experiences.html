@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expériences — Axel LOUKOU | Data Analyst</title>
+  <meta name="description" content="Découvrez mon parcours professionnel dans le domaine de la data et du contrôle de gestion.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #0b63b7;
+      --primary-dark: #094a8f;
+      --primary-light: #e8f2fb;
+      --bg: #f5f8fb;
+      --card: #ffffff;
+      --text: #111;
+      --muted: #6b7280;
+      --shadow: rgba(11, 99, 183, 0.08);
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #eef6ff 0%, var(--bg) 100%);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ========= NAVIGATION ========= */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+      padding: 0 40px;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .nav-links a.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* ========= PAGE HEADER ========= */
+    .page-header {
+      padding: 140px 40px 80px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23dots)"/></svg>');
+    }
+
+    .page-header h1 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-header p {
+      font-size: 20px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ========= CONTENT SECTION ========= */
+    .content-section {
+      padding: 80px 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* ========= TIMELINE ========= */
+    .experiences-timeline {
+      position: relative;
+      padding-left: 0;
+    }
+
+    .experiences-timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--primary), var(--primary-light));
+    }
+
+    .experience-item {
+      padding-left: 50px;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .experience-item::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 5px;
+      width: 20px;
+      height: 20px;
+      background: var(--primary);
+      border: 4px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px var(--primary-light);
+      z-index: 1;
+    }
+
+    .experience-card {
+      background: white;
+      padding: 35px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    .experience-card:hover {
+      box-shadow: 0 8px 30px rgba(11, 99, 183, 0.12);
+      transform: translateX(8px);
+    }
+
+    .experience-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .experience-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .experience-company {
+      font-size: 18px;
+      color: var(--primary);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .experience-company::before {
+      content: '🏢';
+      font-size: 16px;
+    }
+
+    .experience-period {
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .experience-period::before {
+      content: '📅';
+      font-size: 14px;
+    }
+
+    .experience-desc {
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.7;
+      font-size: 15px;
+      padding: 15px;
+      background: var(--bg);
+      border-radius: 10px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .experience-missions {
+      list-style: none;
+      padding: 0;
+    }
+
+    .experience-missions li {
+      padding: 10px 0 10px 35px;
+      position: relative;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .experience-missions li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    /* Section Compétences */
+    .skills-section {
+      margin-top: 60px;
+      padding: 40px;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .skills-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .skill-category {
+      padding: 25px;
+      background: var(--bg);
+      border-radius: 12px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .skill-category h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-tag {
+      padding: 6px 14px;
+      background: white;
+      color: var(--text);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    /* ========= FOOTER ========= */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+      font-size: 14px;
+      background: white;
+      margin-top: 60px;
+    }
+
+    /* ========= RESPONSIVE ========= */
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .page-header h1 {
+        font-size: 32px;
+      }
+
+      .content-section {
+        padding: 60px 20px;
+      }
+
+      .experience-card {
+        padding: 25px;
+      }
+
+      .experience-title {
+        font-size: 18px;
+      }
+
+      .experience-header {
+        flex-direction: column;
+      }
+
+      .skills-section {
+        padding: 30px 20px;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">AL</div>
+        <span>AXEL LOUKOU</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="projets.html">Projets</a></li>
+        <li><a href="experiences.html" class="active">Expériences</a></li>
+        <li><a href="certifications.html">Certifications</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>💼 Expériences Professionnelles</h1>
+    <p>Mon parcours professionnel dans le domaine de la data et du contrôle de gestion</p>
+  </div>
+
+  <!-- Content Section -->
+  <section class="content-section">
+    <!-- Timeline -->
+    <div class="experiences-timeline">
+      <!-- Expérience : Generali France -->
+      <div class="experience-item">
+        <div class="experience-card">
+          <div class="experience-header">
+            <div>
+              <div class="experience-title">Contrôleur de gestion IT</div>
+              <div class="experience-company">Generali France</div>
+            </div>
+            <div class="experience-period">Avril 2025 - Octobre 2025</div>
+          </div>
+          
+          <!-- Chargé de projet IT -->
+          <div style="margin-bottom: 25px;">
+            <h4 style="color: var(--primary); font-size: 18px; font-weight: 700; margin-bottom: 15px;">Chargé de projet IT :</h4>
+            <ul class="experience-missions">
+              <li><strong>Extraction, préparation et analyse de données</strong> via Snowflake / Dataiku, Portail BO, WebI pour produire des reportings adaptés aux besoins métier.</li>
+              <li>Création de <strong>tableaux de bord Power BI</strong> centralisant les <strong>KPIs IARD et Vie</strong> afin de faciliter la prise de décision stratégique en utilisant <strong>DAX et Langage M</strong>.</li>
+            </ul>
+          </div>
+
+          <!-- Contrôle de gestion -->
+          <div style="margin-bottom: 25px;">
+            <h4 style="color: var(--primary); font-size: 18px; font-weight: 700; margin-bottom: 15px;">Contrôle de gestion :</h4>
+            <ul class="experience-missions">
+              <li><strong>Mise à jour mensuelle et fiabilisation</strong> de reporting et outil central de pilotage de la performance et commerciale du réseau d'agents.</li>
+              <li><strong>Calcul, contrôle et analyse</strong> de KPIs commerciaux (multi-équipement, taux de couverture, activation des espaces clients, leads, GRC).</li>
+              <li><strong>Refonte complète d'un formulaire d'aide financière</strong> (Excel / VBA), en optimisant la méthode de calcul des versements et le temps de traitement.</li>
+              <li><strong>Analyse de la performance</strong> des nouveaux agents du réseau à partir d'indicateurs d'activité, de portefeuille, de résiliations, et de commissions.</li>
+              <li>Structuration et exploitation de données Excel pour la mise en place d'<strong>analyses comparatives</strong> (entre agents, moyenne nationale, écarts et évolution dans le temps).</li>
+              <li><strong>Calcul et analyse</strong> de taux de <strong>performance et de croissance</strong> (TCAM fixes et dynamiques) sur la période 2019–2024.</li>
+              <li>Production de <strong>synthèses permettant d'identifier</strong> les dynamiques de performance et les <strong>besoins d'accompagnement</strong> des nouveaux agents.</li>
+            </ul>
+          </div>
+
+          <!-- Accompagnement des utilisateurs -->
+          <div>
+            <h4 style="color: var(--primary); font-size: 18px; font-weight: 700; margin-bottom: 15px;">Accompagnement des utilisateurs :</h4>
+            <ul class="experience-missions">
+              <li><strong>Présentation</strong> des outils développés et <strong>formation</strong> des équipes.</li>
+              <li><strong>Rédaction</strong> de supports pédagogiques (guides, fiches pratiques).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Compétences -->
+    <div class="skills-section">
+      <h2>🎯 Compétences Techniques</h2>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3>📊 Business Intelligence</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Power BI</span>
+            <span class="skill-tag">DAX</span>
+            <span class="skill-tag">Power Query</span>
+            <span class="skill-tag">Tableau</span>
+            <span class="skill-tag">Excel</span>
+            <span class="skill-tag">Power Pivot</span>
+            <span class="skill-tag">VBA / Macros</span>
+            <span class="skill-tag">TCD</span>
+            <span class="skill-tag">PowerPoint</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3>💻 Programmation & Data</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">R</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">SAS</span>
+            <span class="skill-tag">Stata</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3>📈 Analyse & Modélisation</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Statistiques</span>
+            <span class="skill-tag">Machine Learning</span>
+            <span class="skill-tag">GLM</span>
+            <span class="skill-tag">Régression linéaire</span>
+            <span class="skill-tag">Régression logistique</span>
+            <span class="skill-tag">Analyse de survie</span>
+            <span class="skill-tag">Simulation Monte-Carlo</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3>🛠️ Outils & Plateformes</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Snowflake</span>
+            <span class="skill-tag">Dataiku</span>
+            <span class="skill-tag">SAP BO WebI</span>
+            <span class="skill-tag">SharePoint</span>
+            <span class="skill-tag">Microsoft Access</span>
+            <span class="skill-tag">Power Automate</span>
+            <span class="skill-tag">Git / GitHub</span>
+            <span class="skill-tag">Jupyter</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3>🏦 Domaines d'expertise</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Assurance</span>
+            <span class="skill-tag">Actuariat</span>
+            <span class="skill-tag">Finance</span>
+            <span class="skill-tag">Gestion des risques</span>
+            <span class="skill-tag">Solvabilité II</span>
+            <span class="skill-tag">IFRS 17</span>
+            <span class="skill-tag">VaR / Duration</span>
+            <span class="skill-tag">Stress Tests</span>
+            <span class="skill-tag">Comptabilité</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3>📋 Pilotage & Reporting</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Contrôle de gestion</span>
+            <span class="skill-tag">Reporting</span>
+            <span class="skill-tag">KPIs</span>
+            <span class="skill-tag">Automatisation</span>
+            <span class="skill-tag">Tableaux de bord</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3>🔧 Méthodologie & Gestion de projet</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Mode Agile</span>
+            <span class="skill-tag">Sprints</span>
+            <span class="skill-tag">Amélioration continue</span>
+            <span class="skill-tag">Méthode REPERE</span>
+            <span class="skill-tag">Suivi qualité</span>
+            <span class="skill-tag">Documentation</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3>🗣️ Langues</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Français (Natif)</span>
+            <span class="skill-tag">Anglais (B2 - Professionnel)</span>
+          </div>
+        </div>
+
+        <div class="skill-category">
+          <h3>💡 Soft Skills</h3>
+          <div class="skill-tags">
+            <span class="skill-tag">Organisation & Rigueur</span>
+            <span class="skill-tag">Esprit collaboratif</span>
+            <span class="skill-tag">Curiosité</span>
+            <span class="skill-tag">Adaptabilité</span>
+            <span class="skill-tag">Communication</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2024 Axel LOUKOU - Data Analyst | Tous droits réservés</p>
+  </footer>
+
+  <script>
+    // Fonction pour le menu mobile
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      navLinks.classList.toggle('active');
+    }
+
+    // Fermer le menu en cliquant sur un lien
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('navLinks').classList.remove('active');
+      });
+    });
+
+    // Animation au scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.experience-item').forEach(item => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(20px)';
+      item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(item);
+    });
+  </script>
+</body>
+</html>
